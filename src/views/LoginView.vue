@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto max-w-fit mt-10">
+    <div class="container mx-auto mt-10 w-80">
       
   <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
     <div class="mb-4">
