@@ -7,6 +7,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
+        'sans': ['Roboto', 'sans-serif']
       },
       colors: {
         'blue': '#1DA1F2',

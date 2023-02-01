@@ -2,7 +2,7 @@
 <template>
   <div id="app" class="flex container h-screen w-full">
     <!-- side nav -->
-    <div class="lg:w-1/5 border-r border-ligther px-2 lg:px-6 py-2 flex flex-col justify-between">
+    <div class="lg:w-1/5 hidden border-r border-ligther px-2 lg:px-6 py-2 flex flex-col justify-between">
       <div>
         <button class="h-12 w-12 hover:bg-lightblue mb-4 text-3xl rounded-full text-blue">
           <img src="@/assets/logo_fitter_1.png"/>
@@ -43,14 +43,61 @@
       </div>
     </div>
     <!-- Tweets -->
-    <div class="w-1/2 h-full">
+    <div class="lg:w-1/2 w-full h-full overflow-y-scroll">
+      <div class="pt-5 px-8 pb-3 border-b border-lighter">
+        <img class="mx-auto w-6 h-6" src="@/assets/logo_fitter_1.png">
+      </div>
+      <div class="px-5 py-3 border-b b-8 border-lighter flex">
+        <div class="">
+          <img src="@/assets/profile-pic.jpg" class="w-12 h-12 rounded-full object-cover"/>
+        </div>
+        <form class="w-full px-4 relative">
+          <textarea v-model="tweet.content" placeholder="What are you thinking?" class="w-full mt-3 pb-3 focus:outline-none"></textarea>
+          <div class="flex items-center">
+            <font-awesome-icon icon="fa-regular fa-image" class="text-lg text-blue mr-4" />
+            <font-awesome-icon icon="fa-regular fa-face-smile" class="text-lg text-blue mr-4" />
+          </div>
+          <button class="h-10 px-4 absolute bottom-0 right-0 rounded-full text-white font-semibold bg-blue hover:bg-darkblue focus:outline-none">
+            Fleet
+          </button>
+        </form>
+      </div>
+      <div v-for="follow in following" :key="follow.name" class="w-full p-4 border-b hover:bg-ligther flex">
+        <div class="flex-none mr-4">
+          <img src="`${follow.src}`" class="h-12 w-12 rounded-full flex-none">
+        </div>
+        <div class="w-full">
+          <div class="flex items-center w-full">
+            <p class="font-semibold">{{ follow.name }}</p>
+            <p class="text-sm text-dark ml-2">{{ follow.handle }}</p>
+            <p class="text-sm text-dark ml-2">{{ follow.time }}</p>
+          </div>
+          <p class="py-3">{{ follow.tweet }}</p>
+          <div class="flex items-center justify-between w-full">
+            <div class="flex items-center text-sm text-dark">
+              <font-awesome-icon icon="fa-regular fa-comment" class="mr-3" />
+              <p>{{ follow.comments }}</p>
+            </div>
+            <div class="flex items-center text-sm text-dark">
+              <font-awesome-icon icon="fa-solid fa-retweet" class="mr-3" />
+              <p>{{ follow.retweets }}</p>
+            </div>
+            <div class="flex items-center text-sm text-dark">
+              <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
+              <p>{{ follow.likes }}</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
 
     </div>
     <!-- Trending -->
-    <div class="w-1/3 h-full border-l border-lighter py-2 px-6 overflow-y-scroll relative">
+    <div class="md:block hidden w-1/3 h-full border-l border-lighter py-2 px-6 overflow-y-scroll relative">
       <input type="text" class="rounded-full w-full p-2 bg-lighter pl-12 text-sm" placeholder="Search Twitter">
       <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="absolute left-0 top-0 mt-5 ml-12 text-sm text-light" />
-      <div class="w-full rounded-lg bg-lighest">
+      <div class="w-full rounded-lg bg-lightest mt-4">
         <div class="flex items-center justify-between p-3">
           <p class="text-lg font-bold">Trends for You</p>
           <font-awesome-icon icon="fa-solid fa-gear" class="text-lg text-blue" />
@@ -67,17 +114,19 @@
           Show More
         </button>
       </div>
-      <div class="w-full rounded-lg bg-lighest">
+      <div class="w-full rounded-lg bg-lightest my-4">
         <div class="p-3">
           <p class="text-lg font-bold">Who to Follow</p>
         </div>
-        <button class="w-full flex hover:bg-lighter p-3 border-t border-lighter">
-          <img src="@/assets/profile-pic.jpg" class="w-10 h-10 rounded-full object-cover">
+        <button v-for="friend in friends" :key="friend.handle" class="w-full flex hover:bg-lighter p-3 border-t border-lighter">
+          <img :src="`${ friend.src }`" class="w-12 h-12 rounded-full object-cover">
           <div class="ml-4">
-            <p class="text-sm font-bold leading-tight">Pepita Perez</p>
-            <p class="text-sm leading-tight">@pepita</p>
+            <p class="text-sm font-bold leading-tight">{{ friend.name }}</p>
+            <p class="text-sm leading-tight">{{ friend.handle }}</p>
           </div>
-          <font-awesome-icon icon="fa-solid fa-check" class="ml-auto text-blue" />
+          <button class="ml-auto text-sm text-blue py-1 px-4 rounded-full border-2 border-blue">
+            Follow
+          </button>
         </button>
         <button class="p-3 w-full hover:bg-lighter text-left text-blue border-t border-lighter">
           Show More
@@ -106,9 +155,21 @@ export default {
       trending: [
         {top: 'Trending in Spain', title: 'Shakira', bottom: '1b Tweets', id: 1},
         {top: 'Trending in Barcelona', title: 'Sal-Pique', bottom: '136k Tweets', id: 2},
-      ]
+      ],
+      friends: [
+        {src: '', name: 'Elon Musk', handle: '@teslaboy'},
+        {src: '', name: 'Kevin Hart', handle: '@minirock'},
+      ],
+      following: [
+        {src: '', name: 'Shakira', handle: '@hipsdontlie', time: '20 min', tweet: 'Perdon que te sal-pique', comments: '1k', retweets: '140k', likes: '456k'},
+        {src: '', name: 'Miley Cirus', handle: '@hannah', time: '30min', tweet: 'I can buy myself flowers!', comments: '24k', retweets: '345k', likes: '207m'},
+      ],
+      tweets: [
+        {content: 'Yellow!'}
+      ],
+      tweet: {content: ''}
     }
-  }
+  },
 }
 </script>
 

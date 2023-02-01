@@ -2,5 +2,13 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import './assets/tailwind.css'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faTwitter } from '@fortawesome/free-brands-svg-icons'
+import { faAngleDown, faCheck, faGear, faHashtag, faHomeUser, faMagnifyingGlass, faPlus, faRetweet, faStar, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faComment, faFaceSmile, faHeart, faImage } from '@fortawesome/free-regular-svg-icons'
 
-createApp(App).use(store).use(router).mount('#app')
+library.add(faTwitter, faHomeUser, faHashtag, faUser,faAngleDown, faCheck, faPlus, faMagnifyingGlass, faGear, faStar, faImage, faFaceSmile, faStar, faComment, faRetweet, faHeart)
+
+createApp(App).use(store).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
