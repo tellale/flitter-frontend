@@ -43,10 +43,15 @@
       </div>
     </div>
     <!-- Tweets -->
-    <tweetGet/>
+    <div class="lg:w-1/2 w-full h-full overflow-y-scroll">
+      <flitterHeader/>
+      <tweetWrite/>
+      <tweetGet/>
+    </div>
+    
     
     <!-- Trending -->
-    <div class="md:block hidden w-1/3 h-full border-l border-lighter py-2 px-6 overflow-y-scroll relative">
+    <!-- <div class="md:block hidden w-1/3 h-full border-l border-lighter py-2 px-6 overflow-y-scroll relative">
       <input type="text" class="rounded-full w-full p-2 bg-lighter pl-12 text-sm" placeholder="Search Twitter">
       <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="absolute left-0 top-0 mt-5 ml-12 text-sm text-light" />
       <div class="w-full rounded-lg bg-lightest mt-4">
@@ -84,17 +89,21 @@
           Show More
         </button>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script lang="ts">
 import tweetGet from '@/components/tweetGet.vue'
+import tweetWrite from '@/components/tweetWrite.vue'
+import flitterHeader from '@/components/flitterHeader.vue'
 
 export default {
   name: 'HomeView',
   components: {
-    tweetGet
+    tweetGet,
+    tweetWrite,
+    flitterHeader
   },
   data() {
     return {
