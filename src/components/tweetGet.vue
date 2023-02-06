@@ -49,7 +49,7 @@
 
 <script lang="ts">
     import { ref, computed, onMounted } from 'vue';
-    import { useTweetsStore } from '../store/tweets';
+    import { useTweetsStore } from '../store/index';
 
     export default {
         name: 'tweetGet',
