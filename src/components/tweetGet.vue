@@ -7,18 +7,18 @@
                 <div class="flex items-center w-full">
                     <p class="font-semibold">{{ tweet.postedBy }}</p>
                     <!-- <p class="text-sm text-dark ml-2">{{ follow.handle }}</p>-->
-                    <p class="text-sm text-dark ml-2">{{ tweet.tags }}</p>
+                    <p class="text-sm text-lightblue ml-2">{{ tweet.tags }}</p>
                 </div>
                 <p class="py-3">{{ tweet.text }}</p>
                 <div class="flex items-center justify-between w-full">
-                    <div class="flex items-center text-sm text-dark">
+                    <div class="flex items-center text-sm text-grey hover:text-lightblue">
                         <font-awesome-icon icon="fa-regular fa-comment" class="mr-3" />
                     </div>
-                    <div class="flex items-center text-sm text-dark">
+                    <div class="flex items-center text-sm text-grey hover:text-lightblue">
                         <font-awesome-icon icon="fa-solid fa-retweet" class="mr-3" />
                     
                     </div>
-                    <div class="flex items-center text-sm text-dark">
+                    <div class="flex items-center text-sm text-grey hover:text-lightblue">
                         <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
                        
                     </div>
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-    import { ref, computed, onMounted } from 'vue';
+    import { computed, onMounted } from 'vue';
     import { useTweetsStore } from '../store/index';
 
     export default {

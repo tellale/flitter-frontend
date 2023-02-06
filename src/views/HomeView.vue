@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <div id="app" class="flex container h-screen w-full">
-    <!-- side nav -->
+    <!-- side nav
     <div class="lg:w-1/5 hidden border-r border-ligther px-2 lg:px-6 py-2 flex flex-col justify-between">
       <div>
         <button class="h-12 w-12 hover:bg-lightblue mb-4 text-3xl rounded-full text-blue">
@@ -41,12 +41,18 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- Tweets -->
-    <div class="lg:w-1/2 w-full h-full overflow-y-scroll">
+    <div class="lg:w-1/2 w-full h-full overflow-y-scroll static">
       <flitterHeader/>
-      <tweetWrite/>
       <tweetGet/>
+      <div class="fixed bottom-3 right-14">
+        <button @click="click">
+          <font-awesome-icon icon="fa-solid fa-plus" class="text-white bg-lightblue rounded-full text-lg p-4" />
+      </button>
+
+      </div>
+      
     </div>
     
     
@@ -95,43 +101,27 @@
 
 <script lang="ts">
 import tweetGet from '@/components/tweetGet.vue'
-import tweetWrite from '@/components/tweetWrite.vue'
 import flitterHeader from '@/components/flitterHeader.vue'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'HomeView',
   components: {
     tweetGet,
-    tweetWrite,
     flitterHeader
   },
-  data() {
-    return {
-      tabs: [
-        {icon: 'fa-solid fa-house-user', title: 'Home', id: 'home'},
-        {icon: 'fas fa-hashtag', title: 'Explore', id: 'explore'},
-        {icon: 'fa-user', title: 'Profile', id: 'profile'},
-      ],
-      id: 'home',
-      dropdown: false,
-      trending: [
-        {top: 'Trending in Spain', title: 'Shakira', bottom: '1b Tweets', id: 1},
-        {top: 'Trending in Barcelona', title: 'Sal-Pique', bottom: '136k Tweets', id: 2},
-      ],
-      friends: [
-        {src: '', name: 'Elon Musk', handle: '@teslaboy'},
-        {src: '', name: 'Kevin Hart', handle: '@minirock'},
-      ],
-      following: [
-        {src: '', name: 'Shakira', handle: '@hipsdontlie', time: '20 min', tweet: 'Perdon que te sal-pique', comments: '1k', retweets: '140k', likes: '456k'},
-        {src: '', name: 'Miley Cirus', handle: '@hannah', time: '30min', tweet: 'I can buy myself flowers!', comments: '24k', retweets: '345k', likes: '207m'},
-      ],
-      tweets: [
-        {content: 'Yellow!'}
-      ],
-      tweet: {content: ''}
+  setup() {
+    const router = useRouter()
+    const click = () => {
+      router.push({
+        path: '/write-tweet'
+      })
     }
-  },
+    return {
+      click
+    }
+  }
+  
 }
 </script>
 

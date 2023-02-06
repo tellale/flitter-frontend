@@ -10,11 +10,11 @@ module.exports = {
         'sans': ['Roboto', 'sans-serif']
       },
       colors: {
-        'blue': '#1DA1F2',
+        'grey': '#687684',
         'darkblue': '#2795D9',
-        'lightblue': '#EFF9FF',
-        'dark': '#657786',
-        'light': '#AAB8C2',
+        'lightblue': '#4C9EEB',
+        'black': '#000000',
+        'white': '#FFFFFF',
         'lighter': '#E1E8ED',
         'lightest': '#F5F8FA',
       }
