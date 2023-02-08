@@ -1,7 +1,12 @@
 <template>
-        <div v-for="tweet in getTweets" :key="tweet._id" class="w-full p-4 border-b hover:bg-ligther flex">
+        <div v-for="tweet in tweets" :key="tweet._id" class="w-full p-4 border-b hover:bg-ligther flex">
+            <p>{{ tweets }}</p>
+            <div v-for="tw in tweet" :key="tw._id">
+                
+
+            </div>
             <div class="flex-none mr-4">
-                <img src="`${}`" class="h-12 w-12 rounded-full flex-none">
+                <!-- <img src="``" class="h-12 w-12 rounded-full flex-none"> -->
             </div>
             <div class="w-full">
                 <div class="flex items-center w-full">
@@ -10,6 +15,7 @@
                     <p class="text-sm text-lightblue ml-2">{{ tweet.tags }}</p>
                 </div>
                 <p class="py-3">{{ tweet.text }}</p>
+                
                 <div class="flex items-center justify-between w-full">
                     <div class="flex items-center text-sm text-grey hover:text-lightblue">
                         <font-awesome-icon icon="fa-regular fa-comment" class="mr-3" />
@@ -36,10 +42,9 @@
         setup() {
             const store = useTweetsStore();
 
-
-            const getTweets = computed(() => {
-                    return store.getTweets;
-                })
+            // const getTweets = computed(() => {
+            //     return store.getTweets;
+            //     })
             
             const tweets = computed(() => {
                 return store.tweets;
@@ -50,7 +55,7 @@
             })
 
             return {
-                getTweets,
+                //getTweets,
                 tweets
             }
 

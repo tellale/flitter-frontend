@@ -33,6 +33,7 @@ import { ref, computed } from 'vue';
 import { useTweetsStore } from '../store/index';
 import { useRouter } from 'vue-router'
 
+
 export default {
     name: 'tweetWrite',
     setup() {
@@ -43,13 +44,7 @@ export default {
         const handleSubmit = async () => {
             if (newTweet.value.length > 0) {
                 try {
-                    store.writeTweet({
-                        _id: 0,
-                        postedBy: 'Ale',
-                        text: newTweet.value,
-                        tags: [''],
-                        likes: []
-                    })
+                    store.writeTweet(newTweet.value)
                 } catch (err) {
                     console.log(err)
                 } finally {
