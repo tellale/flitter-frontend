@@ -1,15 +1,24 @@
 <template>
-  <div class="searchBox">
-    <div class="form">
-      <input type="text" :placeholder="placeholder"/>
-      <icon name="search" />
-    </div>
+  <div class="flex relative">
+    <input
+      type="text"
+      :placeholder="placeholder"
+      class="w-full border border-gray-300 rounded-md py-2 px-3 text-gray-700 focus:outline-none focus:border-indigo-500"
+    />
+    <span class="text-indigo-500 absolute right-0 top-0 mt-3 mr-3">
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path
+          fill-rule="evenodd"
+          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+          clip-rule="evenodd"/>
+      </svg>
+    </span>
   </div>
 </template>
 
 <script>
 export default {
-  name: "SearchBox",
+  name: "Search",
   props: {
     placeholder: {
       type: String,
@@ -18,42 +27,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.searchBox {
-  margin-top: 5px;
-  position: relative;
-  .form {
-    svg {
-      width: 17px;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 15px;
-      fill: #8899a6;
-    }
-    input:focus + svg {
-      fill: #1da1f2 !important;
-    }
-    input {
-      border-radius: 50px;
-      outline: none;
-      border: 1px solid transparent;
-      width: 100%;
-      height: 42px;
-      padding-left: 50px;
-      font-size: 16px;
-      background: #8899a6;
-      color: #253341!important;
-      line-height: 40px;
-      &::placeholder {
-        color: #253341 !important;
-      }
-      &:focus {
-        border-color: #1da1f2;
-        background: none;
-      }
-    }
-  }
-}
-</style>
