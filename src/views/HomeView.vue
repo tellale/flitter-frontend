@@ -1,8 +1,8 @@
 /* eslint-disable */
 <template>
-  <div id="app" class="flex container h-screen w-full">
+  <div id="app" class="flex h-screen w-full">
     <!-- Tweets -->
-    <div class="lg:w-1/2 w-full h-full overflow-y-scroll static">
+    <div class="w-full h-full overflow-y-scroll static">
       <flitterHeader/>
       <tweetGet/>
       <div class="fixed bottom-3 right-14">
@@ -21,6 +21,9 @@
 import tweetGet from '@/components/tweetGet.vue'
 import flitterHeader from '@/components/flitterHeader.vue'
 import { useRouter } from 'vue-router'
+import { useTweetsStore } from "../store/index";
+import { onMounted } from '@vue/runtime-core';
+
 
 export default {
   name: 'HomeView',
@@ -29,12 +32,18 @@ export default {
     flitterHeader
   },
   setup() {
+    const store = useTweetsStore()
+    onMounted(() => {
+      store.fetchTweets()
+    })
+    
     const router = useRouter()
     const click = () => {
       router.push({
         path: '/write-tweet'
       })
     }
+
     return {
       click
     }

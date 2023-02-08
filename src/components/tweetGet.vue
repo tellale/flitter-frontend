@@ -4,14 +4,12 @@
     :key="tweet._id"
     class="w-full p-4 border-b hover:bg-ligther flex"
   >
-    <p>{{ tweet.text }}</p>
     <div class="flex-none mr-4">
-      <!-- <img src="``" class="h-12 w-12 rounded-full flex-none"> -->
+      <img src="https://i.pravatar.cc/300" class="h-16 w-16 rounded-full flex-none">
     </div>
     <div class="w-full">
-      <div class="flex items-center w-full">
+      <div class="flex flex-wrap items-center text-left w-full">
         <p class="font-semibold">{{ tweet.postedBy.name }}</p>
-        <!-- <p class="text-sm text-dark ml-2">{{ follow.handle }}</p>-->
         <p
           class="text-sm text-lightblue ml-2"
           v-for="tag in tweet.tags"
@@ -20,31 +18,38 @@
           {{ tag }}
         </p>
       </div>
-      <p class="py-3">{{ tweet.text }}</p>
+      <p class="text-left py-3">{{ tweet.text }}</p>
 
-      <div class="flex items-center justify-between w-full">
-        <div class="flex items-center text-sm text-grey hover:text-lightblue">
-          <font-awesome-icon icon="fa-regular fa-comment" class="mr-3" />
+        <div class="flex items-center place-content-end text-md px-4 text-grey">
+            <div class="mr-10">
+                <button v-show="isAuth" class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue">
+                    Seguir
+                </button>
+            </div>
+            <button v-show="isAuth" @click="addLike(tweet._id)" class="flex items-center place-content-end hover:text-lightblue">
+                <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
+                <p>{{ tweet.likes.length }}</p>
+            </button>
+            <div v-show="!isAuth" class="flex items-center place-content-end">
+                <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
+                <p>{{ tweet.likes.length }}</p>
+            </div>
+            
         </div>
-        <div class="flex items-center text-sm text-grey hover:text-lightblue">
-          <font-awesome-icon icon="fa-solid fa-retweet" class="mr-3" />
-        </div>
-        <div class="flex items-center text-sm text-grey hover:text-lightblue">
-          <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, ref } from "vue";
 import { useTweetsStore } from "../store/index";
 
 export default {
   name: "tweetGet",
   setup() {
     const store = useTweetsStore();
+
+    const isAuth = ref(true)
 
     // const getTweets = computed(() => {
     //     return store.getTweets;
@@ -54,13 +59,19 @@ export default {
       return store.tweets;
     });
 
-    onMounted(() => {
-      store.fetchTweets();
-    });
+    // onMounted(() => {
+    //   store.fetchTweets();
+    // });
+
+    const addLike = async (tweetId: number) => {
+        store.likeTweet(tweetId) 
+    } 
 
     return {
       //getTweets,
       tweets,
+      addLike,
+      isAuth
     };
   },
 };

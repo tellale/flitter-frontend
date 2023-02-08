@@ -11,4 +11,5 @@ export default interface Tweet {
     text: string,
     tags: [string],
     likes: []
+    updatedAt: Date
 }
