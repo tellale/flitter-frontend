@@ -5,17 +5,18 @@ import Tweet from '@/interfaces/Tweets'
 
 export const useTweetsStore = defineStore('tweets', {
     state: () => ({
-        tweets: [] as Tweet[]
+        tweets: [] as Tweet[],
+        isLoading: false,
     }),
     getters: {
         getTweets(state) {
             return state.tweets
-        }
+        },
     },
     actions: {
         async fetchTweets() {
             try {
-                const data = await axios.get('http://localHost:3000/api/tweets')
+                const data = await axios.get('http://localHost:3000/api/tweet?page=0&limit=20')
                 this.tweets = data.data
             } catch (err) {
                 alert(err)
@@ -23,7 +24,7 @@ export const useTweetsStore = defineStore('tweets', {
             }
         },
 
-        async writeTweet(tweet: Tweet) {
+        async writeTweet(tweet: string) {
             const data = await axios.post('http://localHost:3000/api/create-tweet', tweet)
             this.tweets.push(data.data)
         },

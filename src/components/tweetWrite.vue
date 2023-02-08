@@ -32,7 +32,7 @@
 import { ref, computed } from 'vue';
 import { useTweetsStore } from '../store/index';
 import { useRouter } from 'vue-router'
-import { isObjectIdOrHexString } from 'mongoose';
+
 
 export default {
     name: 'tweetWrite',
@@ -44,20 +44,7 @@ export default {
         const handleSubmit = async () => {
             if (newTweet.value.length > 0) {
                 try {
-                    store.writeTweet({
-                        _id: 0,
-                        postedBy: {
-                            _id: 0,
-                            name: '',
-                            avatar: '',
-                            email: '',
-                            followers: [],
-                            following: [] 
-                        },
-                        text: newTweet.value,
-                        tags: [''],
-                        likes: []
-                    })
+                    store.writeTweet(newTweet.value)
                 } catch (err) {
                     console.log(err)
                 } finally {
