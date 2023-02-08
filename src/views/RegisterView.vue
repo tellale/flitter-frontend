@@ -13,7 +13,12 @@
         id="username"
         type="text"
         placeholder="Nombre de usuario"
-        required>
+        >
+        <span
+          v-for="error in v$.name.$errors"
+          :key="error.$uid">{{
+          error.$message
+          }}</span>
       <p class="pt-1">Únicamente letras mayúsculas o minúsculas, sin caracteres especiales, número o el carácter.</p>
     </div>
 
@@ -26,7 +31,12 @@
         id="email"
         type="email"
         placeholder="E-mail"
-        required>
+        >
+        <span
+          v-for="error in v$.email.$errors"
+          :key="error.$uid">{{
+          error.$message
+          }}</span>
     </div>
 
     <div class="mb-6">
@@ -38,7 +48,12 @@
         id="password"
         type="password"
         placeholder="Contraseña"
-        required>
+        >
+        <span
+          v-for="error in v$.password.$errors"
+          :key="error.$uid">{{
+          error.$message
+          }}</span>
     </div>
 
     <div class="mb-6">
@@ -50,7 +65,12 @@
         id="password2"
         type="password"
         placeholder="Confirmar contraseña"
-        required>
+        >
+        <span
+          v-for="error in v$.password2.$errors"
+          :key="error.$uid">{{
+          error.$message
+          }}</span>
     </div>
       
       <div class="flex items-center justify-center pt-5">
@@ -74,7 +94,9 @@
   
   <script lang="ts">
   
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
+  import { useVuelidate } from '@vuelidate/core'
+  import { required, email, sameAs, alpha } from '@vuelidate/validators'
  // import { useAuthStore } from '../authStore';
  // import useAuth from '@/modules/auth/composables/useAuth';
   //const authStore = useAuthStore()
@@ -90,18 +112,37 @@
       const userForm = ref({
         name: '',
         email: '',
-        avatar: '',
         password: '',
         password2: ''
       })
+      
+      const rules = computed(() => {
+        return {
+          name: { required, alpha },
+          email: { required, email },
+          password: { required },
+          password2: { required, sameAs: sameAs(userForm.value.password) }
+        }
+      })
+
+      const v$ = useVuelidate(rules, userForm)
 
       return {
         userForm,
+        rules,
+        v$,
         onSubmit: async () => {
-          console.log(userForm.value)
+          const result = await v$.value.$validate()
+          if (result) {
+            console.log(userForm.value)
+            alert('success, form submitted')
+          } else {
+            alert('error, form not submitted')
+          }
+          
          // const { ok, message } = await registerUser(userForm.value)
 
-        //  console.log(ok, message )
+          
         }
       }
 
