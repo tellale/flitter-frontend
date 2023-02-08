@@ -1,6 +1,7 @@
 "use strict";
 import { defineStore } from "pinia";
 import axios from "axios";
+import Tweet from '@/interfaces/Tweets'
 
 export const useTweetsStore = defineStore('tweets', {
     state: () => ({
@@ -16,7 +17,7 @@ export const useTweetsStore = defineStore('tweets', {
             try {
                 const data = await axios.get('http://localHost:3000/api/tweets')
                 this.tweets = data.data
-            } catch(err) {
+            } catch (err) {
                 alert(err)
                 console.log(err)
             }
@@ -29,10 +30,3 @@ export const useTweetsStore = defineStore('tweets', {
     },
 })
 
-interface Tweet {
-    _id: number,
-    postedBy: string, 
-    text: string,
-    tags: [string],
-    likes: []
-}
