@@ -22,6 +22,31 @@
         <div class="fleets">
           <h2> Fleets </h2> 
           <hr>
+            <!-- <div v-for="tweet in getTweets" :key="tweet._id" class="w-full p-4 border-b hover:bg-ligther flex">
+              <div class="flex-none mr-4">
+                  <img src="`${}`" class="h-12 w-12 rounded-full flex-none">
+              </div>
+              <div class="w-full">
+                  <div class="flex items-center w-full">
+                      <p class="font-semibold">{{ tweet.postedBy.avatar }}</p>
+                      <p class="text-sm text-lightblue ml-2">{{ tweet.tags }}</p>
+                  </div>
+                  <p class="py-3">{{ tweet.text }}</p>
+                  <div class="flex items-center justify-between w-full">
+                      <div class="flex items-center text-sm text-grey hover:text-lightblue">
+                          <font-awesome-icon icon="fa-regular fa-comment" class="mr-3" />
+                      </div>
+                      <div class="flex items-center text-sm text-grey hover:text-lightblue">
+                          <font-awesome-icon icon="fa-solid fa-retweet" class="mr-3" />
+                      
+                      </div>
+                      <div class="flex items-center text-sm text-grey hover:text-lightblue">
+                          <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
+                        
+                      </div>
+                  </div>
+              </div>
+            </div> -->
         </div>
       </div>
       <div v-else>Cargando...</div>
@@ -51,7 +76,6 @@ export default defineComponent({
     const userStore = useUsersStore();
     const tweetsStore = useTweetsStore();
     userStore.fetchUser(props.name);
-    tweetsStore.fetchTweets;
 
     const userData = computed(() => {
        return userStore.user;
@@ -66,14 +90,15 @@ export default defineComponent({
     })
 
     //RECOGER TWEETS SOLO DE MI SEGUIDOR, FILTRADO EN BACK
-    // const userTweets = computed(() => {
-    //    return tweetsStore.tweets;
-    // })
+    const getTweets = computed(() => {
+      tweetsStore.fetchUserTweets(userStore.getUserId);
+      return tweetsStore.getTweets;
+    })
 
     const followOrUnfollow = () => {
       userStore.followOrUnfollowAUser(props.name);
       
-      //Volvemos a acceder a los datos YA MODIFICADOS del usuario
+      //Volvemos a acceder a los datos YA MODIFICADOS del usuario??
       userStore.fetchUser(props.name);
     }
 
@@ -81,7 +106,7 @@ export default defineComponent({
       userData,
       loading,
       isFollowing,
-      //userTweets,
+      getTweets,
       followOrUnfollow
     }
   },

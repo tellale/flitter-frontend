@@ -18,6 +18,9 @@ export const useUsersStore = defineStore('users', {
         getUser(state){
             return state.user;
         },
+        getUserId(state){
+            return state.user?._id;
+        }
     },
     actions: {
         async fetchUsers() {
@@ -38,9 +41,7 @@ export const useUsersStore = defineStore('users', {
                 const { data } = await axios.get(`http://localHost:3000/api/user/${user}`);
                 console.log(data.user)
                 this.isLoading = false;
-                console.log(this.user)
                 this.user = data.user
-                console.log(this.user)
             } catch(err) {
                 alert(err)
                 console.log(err)

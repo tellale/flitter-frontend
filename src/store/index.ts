@@ -26,6 +26,16 @@ export const useTweetsStore = defineStore('tweets', {
         async writeTweet(tweet: Tweet) {
             const data = await axios.post('http://localHost:3000/api/create-tweet', tweet)
             this.tweets.push(data.data)
+        },
+
+        async fetchUserTweets(userId: number | undefined) {
+            try {
+                const data = await axios.get(`http://localHost:3000/api/tweet/user/${userId}`)
+                this.tweets = data.data
+            } catch (err) {
+                alert(err)
+                console.log(err)
+            }
         }
     },
 })
