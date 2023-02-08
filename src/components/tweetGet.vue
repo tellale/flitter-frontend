@@ -1,11 +1,11 @@
 <template>
-        <div v-for="tweet in getTweets" :key="tweet._id" class="w-full p-4 border-b hover:bg-ligther flex">
+        <div v-for="tweet in getTweets" :key="tweet.text" class="w-full p-4 border-b hover:bg-ligther flex">
             <div class="flex-none mr-4">
-                <img src="`${}`" class="h-12 w-12 rounded-full flex-none">
+                <img src="`${tweet.postedBy.avatar}`" class="h-12 w-12 rounded-full flex-none">
             </div>
             <div class="w-full">
                 <div class="flex items-center w-full">
-                    <p class="font-semibold">{{ tweet.postedBy }}</p>
+                    <p class="font-semibold">{{ tweet.postedBy.name }}</p>
                     <!-- <p class="text-sm text-dark ml-2">{{ follow.handle }}</p>-->
                     <p class="text-sm text-lightblue ml-2">{{ tweet.tags }}</p>
                 </div>
