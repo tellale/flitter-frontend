@@ -16,14 +16,13 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/writeTweetView.vue')
   },
   {
-    path: '/:id',
+    path: '/:name',
     name: 'profile',
     //beforeEnter: [haveRoleGuard],
     component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue'),
     props: (route) => {
-      const id = route.params.id
-      //return isNaN(id) ?  { id: null } : { id }
-      return id ?  { id: null } : { id }
+      const name = route.params.name
+      return name ?  { name} : { name: null }
     }
   }
 ]
