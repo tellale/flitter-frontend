@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto mt-10 w-80">
-      
+      <flitterHeader/> 
   <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" 
   @submit.prevent = "onSubmit">
     
@@ -90,10 +90,11 @@
     
   </form>
 </div>
+
   </template>
   
   <script lang="ts">
-  
+  import flitterHeader from '@/components/flitterHeader.vue';
   import { ref, computed } from 'vue';
   import { useVuelidate } from '@vuelidate/core'
   import { required, email, sameAs, alpha } from '@vuelidate/validators'
@@ -104,6 +105,10 @@
   
 
   export default {
+    name: 'RegisterView',
+    components: {
+      flitterHeader
+    },
 
     setup() {
 
@@ -113,7 +118,8 @@
         name: '',
         email: '',
         password: '',
-        password2: ''
+        password2: '',
+        enviado: false
       })
       
       const rules = computed(() => {
@@ -131,13 +137,14 @@
         userForm,
         rules,
         v$,
+        
         onSubmit: async () => {
           const result = await v$.value.$validate()
           if (result) {
             console.log(userForm.value)
-            alert('success, form submitted')
+            alert('Formulario válido')
           } else {
-            alert('error, form not submitted')
+            alert('Error, formulario inválido')
           }
           
          // const { ok, message } = await registerUser(userForm.value)
