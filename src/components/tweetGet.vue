@@ -12,7 +12,9 @@
     </div>
     <div class="w-full">
       <div class="flex flex-wrap items-center text-left w-full">
-        <p class="font-semibold">{{ tweet.postedBy.name }}</p>
+        <button @click="visitUserProfile(tweet.postedBy.name)">
+          <p class="font-semibold">{{ tweet.postedBy.name }}</p>
+        </button>
         <p
           class="text-sm text-lightblue ml-2"
           v-for="tag in tweet.tags"
@@ -20,6 +22,7 @@
         >
           {{ tag }}
         </p>
+        <p class="text-grey text-sm ml-1">· {{ timeAgoDate(tweet.updatedAt) }}</p>
       </div>
       <p class="text-left py-3">{{ tweet.text }}</p>
 
@@ -52,13 +55,17 @@
 <script lang="ts">
 import { computed, ref } from "vue";
 import { useTweetsStore } from "../store/index";
+import moment from 'moment'
+import { useRouter } from 'vue-router'
+
 
 export default {
   name: "tweetGet",
   setup() {
     const store = useTweetsStore();
 
-    const isAuth = ref(true);
+    const isAuth = ref(true)
+    const router = useRouter()
 
     // const getTweets = computed(() => {
     //     return store.getTweets;
@@ -68,19 +75,27 @@ export default {
       return store.tweets;
     });
 
-    // onMounted(() => {
-    //   store.fetchTweets();
-    // });
-
     const addLike = async (tweetId: number) => {
-      store.likeTweet(tweetId);
-    };
+        store.likeTweet(tweetId) 
+    }
+
+    const timeAgoDate = (date: Date) => {
+      return moment(date).fromNow()
+    }
+
+    const visitUserProfile = (name:string) => {
+            router.push({
+                path: `/:${name}`
+            })
+        }
 
     return {
       //getTweets,
       tweets,
       addLike,
-      isAuth,
+      timeAgoDate,
+      visitUserProfile,
+      isAuth
     };
   },
 };
