@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import User from "@/interfaces/Users";
 
 export const useUsersStore = defineStore('users', {
     
@@ -58,14 +59,3 @@ export const useUsersStore = defineStore('users', {
         },
     },
 })
-
-interface User {
-    _id: number,
-    name: string, 
-    email: string,
-    avatar: string,
-    passwordHash: string,
-    followers: [],
-    following: [],
-    date: Date
-}

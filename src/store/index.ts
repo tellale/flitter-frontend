@@ -12,6 +12,12 @@ export const useTweetsStore = defineStore("tweets", {
         getTweets(state) {
             return state.tweets;
         },
+        getTweetsLength(state){
+            return state.tweets.length;
+        },
+        getFirstTweets(state){
+            return state.tweets.slice(0, 10);
+        }
     },
     actions: {
         async fetchTweets(page = 0, limit = 20) {
@@ -39,7 +45,8 @@ export const useTweetsStore = defineStore("tweets", {
                 const data = await axios.get(
                     `http://localhost:3000/api/tweet/user/${userId}`
                 );
-                this.tweets = data.data;
+                console.log(data.data[0].tweets)
+                this.tweets = data.data[0].tweets;
             } catch (err) {
                 alert(err);
                 console.log(err);
