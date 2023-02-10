@@ -63,7 +63,7 @@ export default {
       store.fetchTweets(0, 10)
     })
 
-    const isAuth = ref(false)
+    const isAuth = ref(true)
     
     const router = useRouter()
     const click = () => {
