@@ -1,9 +1,15 @@
-import { Types } from 'mongoose'
-
 export default interface Tweet {
-    _id: Types.ObjectId,
-    postedBy: Types.ObjectId, 
+    _id: number,
+    postedBy: {
+        _id: number,
+        name: string,
+        avatar: string,
+        email: string,
+        followers: [],
+        following: [] 
+    }, 
     text: string,
     tags: [string],
-    likes: [Types.ObjectId]
+    likes: []
+    updatedAt: Date
 }

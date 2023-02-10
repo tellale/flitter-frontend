@@ -1,42 +1,64 @@
 "use strict";
 import { defineStore } from "pinia";
 import axios from "axios";
-import Tweet from '@/interfaces/Tweets'
+import Tweet from "@/interfaces/Tweets";
 
-export const useTweetsStore = defineStore('tweets', {
+export const useTweetsStore = defineStore("tweets", {
     state: () => ({
-        tweets: [] as Tweet[]
+        tweets: [] as Tweet[],
+        isLoading: false,
     }),
     getters: {
         getTweets(state) {
-            return state.tweets
+            return state.tweets;
+        },
+        getTweetsLength(state){
+            return state.tweets.length;
+        },
+        getFirstTweets(state){
+            return state.tweets.slice(0, 10);
         }
     },
     actions: {
-        async fetchTweets() {
+        async fetchTweets(page = 0, limit = 20) {
             try {
-                const data = await axios.get('http://localHost:3000/api/tweets')
-                this.tweets = data.data
+                const res = await axios.get(
+                    `http://localhost:3000/api/tweet?page=${page}&limit=${limit}`
+                );
+                this.tweets = res.data[0].tweets;
             } catch (err) {
-                alert(err)
-                console.log(err)
+                alert(err);
+                console.log(err);
             }
         },
 
-        async writeTweet(tweet: Tweet) {
-            const data = await axios.post('http://localHost:3000/api/create-tweet', tweet)
-            this.tweets.push(data.data)
+        async writeTweet(tweet: string) {
+            const data = await axios.post(
+                "http://localhost:3000/api/create-tweet",
+                tweet
+            );
+            this.tweets.push(data.data);
         },
 
         async fetchUserTweets(userId: number | undefined) {
             try {
-                const data = await axios.get(`http://localHost:3000/api/tweet/user/${userId}`)
+                const data = await axios.get(
+                    `http://localhost:3000/api/tweet/user/${userId}`
+                );
+                this.tweets = data.data[0].tweets.reverse();
+            } catch (err) {
+                alert(err);
+                console.log(err);
+            }
+        },
+
+        async likeTweet(tweetId: number | undefined) {
+            try {
+                const data = await axios.patch(`http://localhost:3000/api/tweet/${tweetId}/like`)
                 this.tweets = data.data
             } catch (err) {
-                alert(err)
                 console.log(err)
             }
         }
     },
-})
-
+});

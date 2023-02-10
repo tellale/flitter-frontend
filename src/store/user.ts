@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import User from "@/interfaces/Users";
 
 export const useUsersStore = defineStore('users', {
     
@@ -39,7 +40,6 @@ export const useUsersStore = defineStore('users', {
             try {
                 this.isLoading = true;
                 const { data } = await axios.get(`http://localHost:3000/api/user/${user}`);
-                console.log(data.user)
                 this.isLoading = false;
                 this.user = data.user
             } catch(err) {
@@ -58,14 +58,3 @@ export const useUsersStore = defineStore('users', {
         },
     },
 })
-
-interface User {
-    _id: number,
-    name: string, 
-    email: string,
-    avatar: string,
-    passwordHash: string,
-    followers: [],
-    following: [],
-    date: Date
-}
