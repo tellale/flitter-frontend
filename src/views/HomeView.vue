@@ -4,8 +4,8 @@
     <!-- Tweets -->
     <div class="w-full h-full overflow-y-scroll static">
       <flitterHeader/>
-      <tweetGet/>
-      <div class="fixed bottom-3 right-14">
+      <tweetGet ref="intersactionTrigger"/>
+      <div v-if="isAuth" class="fixed bottom-3 right-14">
         <button @click="click">
           <font-awesome-icon icon="fa-solid fa-plus" class="text-white bg-lightblue rounded-full text-lg p-4" />
       </button>
@@ -22,7 +22,9 @@ import tweetGet from '@/components/tweetGet.vue'
 import flitterHeader from '@/components/flitterHeader.vue'
 import { useRouter } from 'vue-router'
 import { useTweetsStore } from "../store/index";
-import { onMounted } from '@vue/runtime-core';
+import { onMounted, onUnmounted } from '@vue/runtime-core';
+import { ref, watch } from "vue";
+
 
 
 export default {
@@ -33,9 +35,14 @@ export default {
   },
   setup() {
     const store = useTweetsStore()
+
+
     onMounted(() => {
-      store.fetchTweets()
+      store.fetchTweets(0, 10)
     })
+    
+
+    const isAuth = ref(false)
     
     const router = useRouter()
     const click = () => {
@@ -45,7 +52,8 @@ export default {
     }
 
     return {
-      click
+      click,
+      isAuth
     }
   }
   
