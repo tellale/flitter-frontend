@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import ExitView from "../views/ExitView.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
       const name = route.params.name
       return name ?  { name} : { name: null }
     }
+  },
+  {
+    path: '/exit',
+    name: 'exit',
+    component: ExitView,
   }
 ]
 
