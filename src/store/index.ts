@@ -45,8 +45,7 @@ export const useTweetsStore = defineStore("tweets", {
                 const data = await axios.get(
                     `http://localhost:3000/api/tweet/user/${userId}`
                 );
-                console.log(data.data[0].tweets)
-                this.tweets = data.data[0].tweets;
+                this.tweets = data.data[0].tweets.reverse();
             } catch (err) {
                 alert(err);
                 console.log(err);

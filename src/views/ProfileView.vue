@@ -28,6 +28,7 @@
         <div class="fleets">
           <h2> Fleets </h2> 
           <hr>
+          
           <div class="paginationNav">
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
@@ -57,6 +58,7 @@
                 >
                   {{ tag }}
                 </p>
+                <p class="text-sm text-lightblue ml-2">{{ tweet.updatedAt }}</p>
               </div>
               <p class="text-left py-3">{{ tweet.text }}</p>
 
@@ -88,7 +90,7 @@
 import { computed, defineComponent, onBeforeMount, onMounted, ref } from 'vue';
 import flitterHeader from '@/components/flitterHeader.vue'
 import { useUsersStore } from '@/store/user';
-import UserDetails from '../components/UserDetails.vue'
+//import UserDetails from '../components/UserDetails.vue'
 import { useTweetsStore } from '@/store';
 import Tweet from '@/interfaces/Tweets';
 //import tweetGet from '@/components/tweetGet.vue'
@@ -98,7 +100,7 @@ export default defineComponent({
   components: {
     flitterHeader,
     //tweetGet,
-        //UserDetails,
+    //UserDetails,
   },
   props: {
         name: {
@@ -135,9 +137,7 @@ export default defineComponent({
       paginatedData.value = [];
       let ini = (page * elementsPerPage) - elementsPerPage;
       let fin = (page * elementsPerPage);
-      console.log(tweetsStore.tweets)
       paginatedData.value = tweetsStore.getTweets.slice(ini,fin)
-      console.log(paginatedData)
     }
 
     let paginatedData = ref<Tweet[]>([]);

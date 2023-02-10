@@ -40,7 +40,6 @@ export const useUsersStore = defineStore('users', {
             try {
                 this.isLoading = true;
                 const { data } = await axios.get(`http://localHost:3000/api/user/${user}`);
-                console.log(data.user)
                 this.isLoading = false;
                 this.user = data.user
             } catch(err) {
