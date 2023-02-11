@@ -1,8 +1,10 @@
 <template>
     <div class="container mx-auto mt-10 w-80">
       <flitterHeader/> 
-  <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" 
-  @submit.prevent = "onSubmit">
+  <form
+    class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+    @submit.prevent="authStore.handleRegister(userForm)"
+    >
     
     <div class="mb-4">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
@@ -75,15 +77,12 @@
       
       <div class="flex items-center justify-center pt-5">
       <button
+        @click="onSubmit"
         type="submit"
         class="bg-black hover:bg-gray-500 text-base text-white font-bold w-full py-2 px-4 mb-5 rounded-full focus:outline-none focus:shadow-outline">
         Crear una cuenta
       </button>
     </div>
-
-      <!-- <button class="bg-white hover:bg-blue-500 text-black text-base font-bold w-full py-2 px-4 mb-5 border border-black rounded-full focus:outline-none focus:shadow-outline">
-        <router-link class="link" :to="{ }">Crear una cuenta</router-link> 
-      </button> -->
 
       <router-link class="text-xs link hover:text-blue-500" :to="{ name: 'login' }">¿Ya tienes cuenta?</router-link>
     
@@ -98,9 +97,9 @@
   import { ref, computed } from 'vue';
   import { useVuelidate } from '@vuelidate/core'
   import { required, email, sameAs, alpha } from '@vuelidate/validators'
- // import { useAuthStore } from '../authStore';
- // import useAuth from '@/modules/auth/composables/useAuth';
-  //const authStore = useAuthStore()
+  import {useAuthStore} from '../store/auth'
+  
+  const authStore = useAuthStore()
 
   
 
@@ -112,14 +111,12 @@
 
     setup() {
 
-    //  const { registerUser } = useAuth()
-
       const userForm = ref({
         name: '',
         email: '',
         password: '',
         password2: '',
-        enviado: false
+        
       })
       
       const rules = computed(() => {
@@ -137,18 +134,16 @@
         userForm,
         rules,
         v$,
+        authStore,
         
         onSubmit: async () => {
           const result = await v$.value.$validate()
-          if (result) {
-            console.log(userForm.value)
+
+          if (result) {    
             alert('Formulario válido')
           } else {
             alert('Error, formulario inválido')
           }
-          
-         // const { ok, message } = await registerUser(userForm.value)
-
           
         }
       }
