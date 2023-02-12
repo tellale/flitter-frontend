@@ -3,8 +3,8 @@
   <div id="app" class="flex h-screen w-full">
     <!-- Tweets -->
     <div class="w-full h-full overflow-y-scroll static">
-      <flitterHeader/>
-      <tweetGet/>
+      <flitterHeader />
+      <tweetGet />
       <div class="paginationNav">
             <nav>
               <ul class="pagination items-center justify-content-center">
@@ -28,20 +28,28 @@
       
       <div v-if="isAuth" class="fixed bottom-3 right-14">
         <button @click="click">
-          <font-awesome-icon icon="fa-solid fa-plus" class="text-white bg-lightblue rounded-full text-lg p-4" />
-      </button>
-
+          <font-awesome-icon
+            icon="fa-solid fa-plus"
+            class="text-white bg-lightblue rounded-full text-lg p-4"
+          />
+        </button>
+             
       </div>
-      
+      <div class="w-full fixed bottom-3 flex justify-content-around">
+          <NavbarPublic v-if="!isAuth" />
+    <NavbarPrivate v-else />
+        </div>
     </div>
-
   </div>
 </template>
 
 <script lang="ts">
-import tweetGet from '@/components/tweetGet.vue'
-import flitterHeader from '@/components/flitterHeader.vue'
-import { useRouter } from 'vue-router'
+import tweetGet from "@/components/tweetGet.vue";
+import NavbarPublic from "@/components/NavbarPublic.vue";
+import NavbarPrivate from "@/components/NavbarPrivate.vue";
+import flitterHeader from "@/components/flitterHeader.vue";
+import { useRouter } from "vue-router";
+import { useUsersStore } from "@/store/user";
 import { useTweetsStore } from "../store/index";
 import { onMounted } from '@vue/runtime-core';
 import { ref, computed } from "vue";
@@ -51,10 +59,12 @@ import Tweet from '@/interfaces/Tweets';
 
 
 export default {
-  name: 'HomeView',
+  name: "HomeView",
   components: {
     tweetGet,
-    flitterHeader
+    flitterHeader,
+    NavbarPublic,
+    NavbarPrivate,
   },
   setup() {
     const store = useTweetsStore()
@@ -123,4 +133,3 @@ export default {
   },
 }
 </script>
-

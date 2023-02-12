@@ -7,6 +7,7 @@ export const useUsersStore = defineStore("users", {
     users: [] as User[],
     isLoading: false,
     user: undefined as User | undefined,
+        isAuth: true
   }),
   getters: {
     getUsers(state) {
@@ -34,7 +35,6 @@ export const useUsersStore = defineStore("users", {
         console.log(err);
       }
     },
-
     async fetchUser(user: string) {
       try {
         this.isLoading = true;
