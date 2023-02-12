@@ -140,9 +140,9 @@
           const result = await v$.value.$validate()
 
           if (result) {    
-            alert('Formulario válido')
+            console.log('Formulario válido')
           } else {
-            alert('Error, formulario inválido')
+            console.log('Error, formulario inválido')
           }
           
         }
