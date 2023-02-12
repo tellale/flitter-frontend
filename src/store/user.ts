@@ -60,6 +60,7 @@ export const useUsersStore = defineStore("users", {
         console.log(err);
       }
     },
+    
     async followOrUnfollowAUser(user: string) {
       try {
         const { data } = await axios.put(`/api/user/follow/${user}`);

@@ -115,17 +115,17 @@ setup(props) {
     paginatedData.value = tweetsStore.getTweets.slice(ini,fin)
   }
 
-  let paginatedData = ref<Tweet[]>([]);
-  let thereAreTweets = ref<boolean>(false);
-  async function fetchData(userId: number | undefined) {
-      await tweetsStore.fetchUserTweets(userId);
-      paginatedData.value = tweetsStore.getFirstTweets;
-      if (paginatedData.value.length <= 0){
-        thereAreTweets.value = false;
-      }else{
-        thereAreTweets.value = true;
-      }
-  }
+    let paginatedData = ref<Tweet[]>([]);
+    let thereAreTweets = ref<boolean>(false);
+    async function fetchData(userId: number | undefined) {
+        await tweetsStore.fetchUserTweets(userId);
+        paginatedData.value = tweetsStore.getFirstTweets;
+        if (paginatedData.value.length <= 0){
+          thereAreTweets.value = false;
+        }else{
+          thereAreTweets.value = true;
+        }
+    }
 
   const getPreviousPage = () => {
     if(actualPage > 1){
