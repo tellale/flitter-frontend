@@ -43,8 +43,9 @@ export const useUsersStore = defineStore("users", {
 
         if (data?.user) {
           this.isAuth = true
+          this.authUser = data?.user
         }
-        return data?.user;
+        return data?.user ?? {};
       } catch (err) {
         console.log(err);
       }
