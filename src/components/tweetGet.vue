@@ -1,14 +1,12 @@
 <template>
-  <div
-    v-for="tweet in tweets"
-    :key="tweet._id"
-    class="w-full p-4 border-b hover:bg-ligther flex"
-  >
+  <div class="w-full p-4 border-b hover:bg-ligther">
     <div class="flex-none mr-4">
-      <img
+      <button @click="visitUserProfile(tweet.postedBy.name)">
+        <img
         :src="tweet.postedBy.avatar"
         class="h-16 w-16 rounded-full flex-none"
-      />
+        />
+      </button>
     </div>
     <div class="w-full">
       <div class="flex flex-wrap items-center text-left w-full">
@@ -50,28 +48,28 @@
       </div>
     </div>
   </div>
+    
 </template>
 
 <script lang="ts">
-import { computed, ref } from "vue";
+import {defineComponent, PropType, ref } from "vue";
 import { useTweetsStore } from "../store/index";
 import moment from 'moment'
 import { useRouter } from 'vue-router'
+import Tweet from "@/interfaces/Tweets";
 
 export default {
   name: "tweetGet",
+  props: {
+    tweet: {
+      type: Object as PropType<Tweet>,
+      required: true
+    }
+  },
   setup() {
     const store = useTweetsStore();
     const isAuth = ref(true)
     const router = useRouter()
-
-    // const getTweets = computed(() => {
-    //     return store.getTweets;
-    //     })
-
-    const tweets = computed(() => {
-      return store.tweets;
-    });
 
     const addLike = async (tweetId: number) => {
         store.likeTweet(tweetId) 
@@ -83,13 +81,13 @@ export default {
 
     const visitUserProfile = (name:string) => {
             router.push({
-                path: `/${name}`
+                path: `/profile/${name}`
             })
         }
 
     return {
       //getTweets,
-      tweets,
+      //tweets,
       addLike,
       timeAgoDate,
       visitUserProfile,

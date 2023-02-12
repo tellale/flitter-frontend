@@ -8,6 +8,8 @@ export const useTweetsStore = defineStore("tweets", {
   state: () => ({
     tweets: [] as Tweet[],
     isLoading: false,
+    page: 0 as number,
+    limit: 20
 
   }),
   getters: {
@@ -20,9 +22,10 @@ export const useTweetsStore = defineStore("tweets", {
     getFirstTweets(state) {
       return state.tweets.slice(0, 10);
     },
+
   },
   actions: {
-    async fetchTweets(page = 0, limit = 20) {
+    async fetchTweets({page = 0, limit = 20}) {
       try {
         const res = await axios.get(`/api/tweet?page=${page}&limit=${limit}`);
         this.tweets = res.data[0].tweets;

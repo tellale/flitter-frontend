@@ -2,29 +2,22 @@
 <template>
   <div id="app" class="flex h-screen w-full">
     <!-- Tweets -->
-    <div class="w-full h-full overflow-y-scroll static">
+    <div class="w-full h-full overflow-y-scroll static p-4">
       <flitterHeader/>
-      <tweetGet/>
-      <div class="paginationNav">
-            <nav>
-              <ul class="pagination items-center justify-content-center">
-                <li class="page-item">
-                  <a class="text-lightblue p-3 hover:text-grey" @click="getPreviousPage()" >Anterior</a>
-                </li>
-                <li 
-                  v-for="page in totalPages" 
-                  :key="page" 
-                  @click="getDataPage(page)" 
-                  v-bind:class="isActive(page)" 
-                  class="text-lightblue">
-                    <a class="text-white bg-lightblue p-2 rounded-2 px-3 hover:bg-grey" >{{ page }}</a>
-                </li>
-                <li class="text-lightblue">
-                  <a class="text-lightblue p-3 hover:text-grey" @click="getNextPage()"  >Siguiente</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+      <tweetGet
+        v-for="tweet in tweets"
+        :key="tweet._id"
+        :tweet="tweet"
+        class="w-full p-4 border-b hover:bg-ligther flex"/>
+      <div class="flex items-center justify-center">
+        <button class="text-lightblue p-2 border rounded-full mx-3 mt-3 hover:bg-lightblue hover:text-white" @click="previousPage">Anterior</button>
+        <ul>
+          <li v-for="page in totalPages" :key="page">
+            <button @click="goPage">{{ page }}</button>
+          </li>
+        </ul>
+        <button class="text-lightblue p-2 border rounded-full mx-3 mt-3 hover:bg-lightblue hover:text-white" @click="newPage">Siguiente</button>
+      </div>    
       
       <div v-if="isAuth" class="fixed bottom-3 right-14">
         <button @click="click">
@@ -43,9 +36,8 @@ import tweetGet from '@/components/tweetGet.vue'
 import flitterHeader from '@/components/flitterHeader.vue'
 import { useRouter } from 'vue-router'
 import { useTweetsStore } from "../store/index";
-import { onMounted } from '@vue/runtime-core';
+import { onMounted, onUpdated } from '@vue/runtime-core';
 import { ref, computed } from "vue";
-import Tweet from '@/interfaces/Tweets';
 
 
 
@@ -58,10 +50,17 @@ export default {
   },
   setup() {
     const store = useTweetsStore()
-
+    const state = ref({page: 0, limit: 10})
+    
+    
     onMounted(() => {
-      store.fetchTweets(0, 10)
+      console.log('data mounted');
+      store.fetchTweets(state.value)
     })
+
+    const tweets = computed(() => {
+      return store.tweets;
+    });
 
     const isAuth = ref(true)
     
@@ -71,54 +70,32 @@ export default {
         path: '/write-tweet'
       })
     }
-
-    //PAGINACIÓN
-    const elementsPerPage = 10;
-    let actualPage = 1;
-
-    let totalPages = computed(() => {
-      const pages = Math.ceil(store.getTweetsLength / elementsPerPage);
-      return pages;
-    })
-
-    const getDataPage = (page: number) => {
-      actualPage = page;
-      paginatedData.value = [];
-      let ini = (page * elementsPerPage) - elementsPerPage;
-      let fin = (page * elementsPerPage);
-      paginatedData.value = store.getTweets.slice(ini,fin)
+    
+    let totalPages = () => {
+      return state.value.limit / store.getTweetsLength
     }
 
-    let paginatedData = ref<Tweet[]>([]);
+    
+    const newPage = () => {
+      state.value.page ++
+      return store.fetchTweets(state.value)
+    }
 
-    const getPreviousPage = () => {
-      if(actualPage > 1){
-        actualPage--;
+    const previousPage = () => {
+      if (state.value.page !== 0) {
+        state.value.page --
+      return store.fetchTweets(state.value)
       }
-      getDataPage(actualPage);
-    }
-   
-    const getNextPage = () => {
-      if(actualPage < totalPages.value){
-        actualPage++;
-      }
-      getDataPage(actualPage);
     }
 
-    const isActive = (page: number) =>{
-      return page == actualPage ? 'active' : '';
-    }
 
     return {
       click,
       isAuth,
-      totalPages,
-      getDataPage,
-      getPreviousPage,
-      getNextPage,
-      paginatedData,
-      isActive
-
+      tweets,
+      newPage,
+      previousPage,
+      totalPages, 
     }
   },
 }
