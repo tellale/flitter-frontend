@@ -41,83 +41,37 @@
         </div>
       </div>
 
-      <div class="fleets">
-        <h2>Fleets</h2>
-        <hr />
 
-        <div class="paginationNav">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-              <li class="page-item">
-                <a class="page-link" @click="getPreviousPage()">Anterior</a>
-              </li>
-              <li
-                v-for="page in totalPages"
-                :key="page"
-                @click="getDataPage(page)"
-                v-bind:class="isActive(page)"
-                class="page-item"
-              >
-                <a class="page-link">{{ page }}</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" @click="getNextPage()">Siguiente</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        <div class="fleets">
+          <h2> Fleets </h2> 
+          <hr>
 
-        <!-- <tweetGet/> -->
-        <div
-          v-for="tweet in paginatedData"
-          :key="tweet._id"
-          class="w-full p-4 border-b hover:bg-ligther flex"
-        >
-          <div class="flex-none mr-4">
-            <img
-              src="https://i.pravatar.cc/300"
-              class="h-16 w-16 rounded-full flex-none"
-            />
+          <div v-show="thereAreTweets" class="paginationNav">
+            
+            <!-- AÑADIDO PARA EL CAMBIO DE ORDEN  -->
+            <i @click="reverseOrder()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"/>
+              </svg>
+            </i>
+            <!-- HASTA AQUÍ  -->
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                <li class="page-item"><a class="page-link" @click="getPreviousPage()" >Anterior</a></li>
+                <li v-for="page in totalPages" :key="page" @click="getDataPage(page)" v-bind:class="isActive(page)" class="page-item"><a class="page-link">{{ page }}</a></li>
+                <li class="page-item"><a class="page-link" @click="getNextPage()"  >Siguiente</a></li>
+              </ul>
+            </nav>
           </div>
-          <div class="w-full">
-            <div class="flex flex-wrap items-center text-left w-full">
-              <p class="font-semibold">{{ tweet.postedBy.name }}</p>
-              <p
-                class="text-sm text-lightblue ml-2"
-                v-for="tag in tweet.tags"
-                :key="tag"
-              >
-                {{ tag }}
-              </p>
-              <p class="text-sm text-lightblue ml-2">{{ tweet.updatedAt }}</p>
-            </div>
-            <p class="text-left py-3">{{ tweet.text }}</p>
 
-            <div
-              class="flex items-center place-content-end text-md px-4 text-grey"
-            >
-              <div class="mr-10">
-                <button
-                  v-show="isAuth"
-                  class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue"
-                >
-                  Seguir
-                </button>
-              </div>
-              <button
-                v-show="isAuth"
-                @click="addLike(tweet._id)"
-                class="flex items-center place-content-end hover:text-lightblue"
-              >
-                <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
-                <p>{{ tweet.likes.length }}</p>
-              </button>
-              <div v-show="!isAuth" class="flex items-center place-content-end">
-                <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
-                <p>{{ tweet.likes.length }}</p>
-              </div>
-            </div>
-          </div>
+          <!-- <tweetGet/> -->
+          <TweetCard     
+            v-for="tweet in paginatedData"
+            :key="tweet._id"
+            :tweet="tweet"
+            :avatar = userData?.avatar
+            class="w-full p-4 border-b hover:bg-ligther flex"/>
         </div>
       </div>
     </div>
@@ -128,19 +82,17 @@
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, onMounted, ref } from "vue";
 import flitterHeader from "@/components/flitterHeader.vue";
-  import { useUsersStore } from "@/store/user";
-//import UserDetails from '../components/UserDetails.vue'
-import { useTweetsStore } from "@/store";
-import Tweet from "@/interfaces/Tweets";
-//import tweetGet from '@/components/tweetGet.vue'
+import { useUsersStore } from "@/store/user";
+import { useTweetsStore } from '@/store';
+import Tweet from '@/interfaces/Tweets';
+import TweetCard from '@/components/tweetCard.vue';
 
 export default defineComponent({
   name: "ProfileView",
   components: {
     flitterHeader,
-    //tweetGet,
-    //UserDetails,
-  },
+    TweetCard
+},
   props: {
     name: {
       type: String,
@@ -180,10 +132,17 @@ export default defineComponent({
     };
 
     let paginatedData = ref<Tweet[]>([]);
-
+    let thereAreTweets = ref<boolean>(false);
     async function fetchData(userId: number | undefined) {
-      await tweetsStore.fetchUserTweets(userId);
-      paginatedData.value = tweetsStore.getFirstTweets;
+
+        await tweetsStore.fetchUserTweets(userId);
+        paginatedData.value = tweetsStore.getFirstTweets;
+        if (paginatedData.value.length <= 0){
+          thereAreTweets.value = false;
+        }else{
+          thereAreTweets.value = true;
+        }
+        console.log(paginatedData.value.length)
     }
 
     const getPreviousPage = () => {
@@ -200,12 +159,30 @@ export default defineComponent({
       getDataPage(actualPage);
     };
 
-    const isActive = (page: number) => {
-      return page == actualPage ? "active" : "";
+
+    //AÑADIDO PARA EL CAMBIO DE ORDEN 
+    // let tweets = ref<Tweet[]>([]);
+    // fetchData();
+    // async function fetchData() {
+    //     await store.fetchTweets();
+    //     tweets.value = store.tweets;
+    // }
+    // const reverseOrder = () => {
+    //   store.reverseTweets();
+    //   tweets.value = store.tweets;
+    // };
+
+    const reverseOrder = () => {
+      tweetsStore.reverseTweets();
+      paginatedData.value = tweetsStore.tweets;
     };
+    //HASTA AQUI 
+
+    const isActive = (page: number) =>{
+      return page == actualPage ? 'active' : '';
+    }
 
     //SEGUIR Y DAR LIKES
-
     //FALTA MODIFICAR ESTA PROPIEDAD
     const isFollowing = computed(() => {
       return true;
@@ -215,10 +192,6 @@ export default defineComponent({
       userStore.followOrUnfollowAUser(props.name);
       //Volvemos a acceder a los datos YA MODIFICADOS del usuario??
       userStore.fetchUser(props.name);
-    };
-
-    const addLike = async (tweetId: number) => {
-      tweetsStore.likeTweet(tweetId);
     };
 
     return {
@@ -234,9 +207,10 @@ export default defineComponent({
       getNextPage,
       paginatedData,
       isActive,
-      // tweets,
-      addLike,
-    };
+      thereAreTweets,
+      //AÑADIDO PARA EL CAMBIO DE ORDEN 
+      reverseOrder
+    }
   },
 });
 </script>
