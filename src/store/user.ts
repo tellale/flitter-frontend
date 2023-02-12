@@ -40,10 +40,12 @@ export const useUsersStore = defineStore("users", {
         this.isLoading = true;
         const { data } = await axios.get(`/api/user`);
         this.isLoading = false;
-        if (data?.name) {
-          this.isAuth = true;
+
+        if (data?.user) {
+          this.isAuth = true
+          this.authUser = data?.user
         }
-        this.authUser = data.user;
+        return data?.user ?? {};
       } catch (err) {
         console.log(err);
       }

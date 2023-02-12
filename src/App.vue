@@ -1,7 +1,7 @@
 <template>
   <router-view/>
   <div class="w-full fixed bottom-3 flex justify-content-around">
-      <NavbarPublic v-if="!isAuth" />
+      <NavbarPublic v-if="!store.isAuth" />
       <NavbarPrivate v-else />
   </div>
 </template>
@@ -9,7 +9,7 @@
 import NavbarPublic from "@/components/NavbarPublic.vue";
 import NavbarPrivate from "@/components/NavbarPrivate.vue";
 import { useUsersStore } from "@/store/user";
-import { onMounted } from '@vue/runtime-core';
+import { onBeforeMount, onMounted, onUpdated } from '@vue/runtime-core';
 import { ref } from "vue";
 
 
@@ -21,14 +21,9 @@ export default {
   },
   setup() {
     const store = useUsersStore();
-    const isAuth = ref(store.isAuth)
-    
-    onMounted(() => {
-      store.fetchAuthUser()
-    })
-
+    onBeforeMount(async() => await store.fetchAuthUser())
     return {
-      isAuth
+      store
     }
   },
 }
