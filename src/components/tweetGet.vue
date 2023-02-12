@@ -56,7 +56,7 @@ import {defineComponent, PropType, ref } from "vue";
 import { useTweetsStore } from "../store/index";
 import moment from 'moment'
 import { useRouter } from 'vue-router'
-import Tweet from "@/interfaces/Tweets";
+import Tweet from '@/interfaces/Tweets';
 
 export default {
   name: "tweetGet",
@@ -71,19 +71,21 @@ export default {
     const isAuth = ref(true)
     const router = useRouter()
 
+
     const addLike = async (tweetId: number) => {
         store.likeTweet(tweetId) 
     }
-
+    
     const timeAgoDate = (date: Date) => {
       return moment(date).fromNow()
     }
 
     const visitUserProfile = (name:string) => {
-            router.push({
-                path: `/profile/${name}`
-            })
-        }
+        router.push({
+            path: `/profile/${name}`
+        })
+    }
+
 
     return {
       //getTweets,
@@ -91,7 +93,7 @@ export default {
       addLike,
       timeAgoDate,
       visitUserProfile,
-      isAuth
+      isAuth,
     };
   },
 };
