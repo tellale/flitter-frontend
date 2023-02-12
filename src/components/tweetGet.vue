@@ -55,7 +55,7 @@
 <script lang="ts">
 import { computed, ref } from "vue";
 import { useTweetsStore } from "../store/index";
-//import moment from 'moment'
+import moment from 'moment'
 import { useRouter } from 'vue-router'
 
 
@@ -80,7 +80,7 @@ export default {
     }
 
     const timeAgoDate = (date: Date) => {
-      //return moment(date).fromNow()
+      return moment(date).fromNow()
     }
 
     const visitUserProfile = (name:string) => {
