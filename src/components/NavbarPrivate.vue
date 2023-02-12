@@ -1,7 +1,7 @@
 <template>
   <header class="flex justify-between block fixed bottom-5 inset-x-3 z-50 ">
     
-        <router-link to="/home">
+        <router-link to="/">
         <img class="w-10 h-10" src="@/assets/image2.png"/>
         </router-link>
 <!--add search-->

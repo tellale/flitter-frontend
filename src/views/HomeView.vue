@@ -5,7 +5,28 @@
     <div class="w-full h-full overflow-y-scroll static">
       <flitterHeader />
       <tweetGet />
-      <div class="fixed bottom-3 right-14">
+      <div class="paginationNav">
+            <nav>
+              <ul class="pagination items-center justify-content-center">
+                <li class="page-item">
+                  <a class="text-lightblue p-3 hover:text-grey" @click="getPreviousPage()" >Anterior</a>
+                </li>
+                <li 
+                  v-for="page in totalPages" 
+                  :key="page" 
+                  @click="getDataPage(page)" 
+                  v-bind:class="isActive(page)" 
+                  class="text-lightblue">
+                    <a class="text-white bg-lightblue p-2 rounded-2 px-3 hover:bg-grey" >{{ page }}</a>
+                </li>
+                <li class="text-lightblue">
+                  <a class="text-lightblue p-3 hover:text-grey" @click="getNextPage()"  >Siguiente</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+      
+      <div v-if="isAuth" class="fixed bottom-3 right-14">
         <button @click="click">
           <font-awesome-icon
             icon="fa-solid fa-plus"
@@ -29,7 +50,13 @@ import flitterHeader from "@/components/flitterHeader.vue";
 import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/user";
 import { useTweetsStore } from "../store/index";
-import { onMounted } from "@vue/runtime-core";
+import { onMounted } from '@vue/runtime-core';
+import { ref, computed } from "vue";
+import Tweet from '@/interfaces/Tweets';
+
+
+
+
 export default {
   name: "HomeView",
   components: {
@@ -39,27 +66,69 @@ export default {
     NavbarPrivate,
   },
   setup() {
-    const store = useTweetsStore();
-    const userStore = useUsersStore();
+    const store = useTweetsStore()
+
     onMounted(() => {
-      store.fetchTweets();
-    });
+      store.fetchTweets(0, 10)
+    })
 
-    const isAuth = () => {
-      return userStore.isAuth;
-    };
-
-    const router = useRouter();
+    const isAuth = ref(true)
+    
+    const router = useRouter()
     const click = () => {
       router.push({
-        path: "/write-tweet",
-      });
-    };
+        path: '/write-tweet'
+      })
+    }
+
+    //PAGINACIÓN
+    const elementsPerPage = 10;
+    let actualPage = 1;
+
+    let totalPages = computed(() => {
+      const pages = Math.ceil(store.getTweetsLength / elementsPerPage);
+      return pages;
+    })
+
+    const getDataPage = (page: number) => {
+      actualPage = page;
+      paginatedData.value = [];
+      let ini = (page * elementsPerPage) - elementsPerPage;
+      let fin = (page * elementsPerPage);
+      paginatedData.value = store.getTweets.slice(ini,fin)
+    }
+
+    let paginatedData = ref<Tweet[]>([]);
+
+    const getPreviousPage = () => {
+      if(actualPage > 1){
+        actualPage--;
+      }
+      getDataPage(actualPage);
+    }
+   
+    const getNextPage = () => {
+      if(actualPage < totalPages.value){
+        actualPage++;
+      }
+      getDataPage(actualPage);
+    }
+
+    const isActive = (page: number) =>{
+      return page == actualPage ? 'active' : '';
+    }
 
     return {
       click,
       isAuth,
-    };
+      totalPages,
+      getDataPage,
+      getPreviousPage,
+      getNextPage,
+      paginatedData,
+      isActive
+,
+    }
   },
-};
+}
 </script>
