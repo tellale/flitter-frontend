@@ -125,7 +125,6 @@ export default defineComponent({
         }else{
           thereAreTweets.value = true;
         }
-        console.log(paginatedData.value.length)
     }
 
     const getPreviousPage = () => {
