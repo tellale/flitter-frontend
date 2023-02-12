@@ -1,5 +1,5 @@
 <template>
-  <header class="flex justify-between block fixed bottom-5 inset-x-3 z-50 ">
+  <header class="header">
     
         <router-link to="/">
         <img class="w-10 h-10" src="@/assets/image2.png"/>
@@ -24,6 +24,16 @@ export default defineComponent({
 });
 </script>
 <style>
- 
+.header {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  padding: 1rem;
+  width: 100%;
+  bottom: 0;
 
+}
 </style>
+
+

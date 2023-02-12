@@ -26,7 +26,7 @@
             </nav>
           </div>
       
-      <div v-if="isAuth" class="fixed bottom-3 right-14">
+      <div v-if="isAuth" class="fixed z-10 bottom-20 right-5">
         <button @click="click">
           <font-awesome-icon
             icon="fa-solid fa-plus"
@@ -34,21 +34,15 @@
           />
         </button>
       </div>
-      <div class="w-full fixed bottom-3 flex justify-content-around">
-        <NavbarPublic v-if="!isAuth" />
-        <NavbarPrivate v-else />
-      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import tweetGet from "@/components/tweetGet.vue";
-import NavbarPublic from "@/components/NavbarPublic.vue";
-import NavbarPrivate from "@/components/NavbarPrivate.vue";
+
 import flitterHeader from "@/components/flitterHeader.vue";
 import { useRouter } from "vue-router";
-import { useUsersStore } from "@/store/user";
 import { useTweetsStore } from "../store/index";
 import { onMounted } from '@vue/runtime-core';
 import { ref, computed } from "vue";
@@ -62,17 +56,14 @@ export default {
   components: {
     tweetGet,
     flitterHeader,
-    NavbarPublic,
-    NavbarPrivate,
   },
   setup() {
     const store = useTweetsStore()
+    const isAuth = ref(false)
 
     onMounted(() => {
       store.fetchTweets(0, 10)
     })
-
-    const isAuth = ref(true)
     
     const router = useRouter()
     const click = () => {
@@ -119,8 +110,8 @@ export default {
     }
 
     return {
+      isAuth, 
       click,
-      isAuth,
       totalPages,
       getDataPage,
       getPreviousPage,

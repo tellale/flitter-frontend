@@ -7,7 +7,8 @@ export const useUsersStore = defineStore("users", {
     users: [] as User[],
     isLoading: false,
     user: undefined as User | undefined,
-        isAuth: true
+    isAuth: false,
+    authUser: {} as User
   }),
   getters: {
     getUsers(state) {
@@ -31,7 +32,19 @@ export const useUsersStore = defineStore("users", {
         this.isLoading = false;
         this.users = data.data;
       } catch (err) {
-        alert(err);
+        console.log(err);
+      }
+    },
+    async fetchAuthUser() {
+      try {
+        this.isLoading = true;
+        const { data } = await axios.get(`/api/user`);
+        this.isLoading = false;
+        if (data?.name) {
+          this.isAuth = true;
+        }
+        this.authUser = data.user;
+      } catch (err) {
         console.log(err);
       }
     },
@@ -42,7 +55,6 @@ export const useUsersStore = defineStore("users", {
         this.isLoading = false;
         this.user = data.user;
       } catch (err) {
-        alert(err);
         console.log(err);
       }
     },
