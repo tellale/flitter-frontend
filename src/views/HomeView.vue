@@ -12,12 +12,11 @@
             class="text-white bg-lightblue rounded-full text-lg p-4"
           />
         </button>
-             
       </div>
       <div class="w-full fixed bottom-3 flex justify-content-around">
-          <NavbarPublic v-if="!isAuth" />
-    <NavbarPrivate v-else />
-        </div>
+        <NavbarPublic v-if="!isAuth" />
+        <NavbarPrivate v-else />
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +58,7 @@ export default {
 
     return {
       click,
-      isAuth
+      isAuth,
     };
   },
 };

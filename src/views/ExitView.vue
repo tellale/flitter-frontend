@@ -1,20 +1,24 @@
 <template>
-   <div class="container">
+  <div class="container">
     <div class="buttons">
-      <img class="mb-20 mx-auto w-8 h-8" src="@/assets/logo_fitter_1.png">
+      <img class="mb-20 mx-auto w-8 h-8" src="@/assets/logo_fitter_1.png" />
+      <router-link to="/profile">
       <button class="secondary-button">Perfil</button>
-      <button class="secondary-button">Desactivar cuenta</button>
-      <button class="secondary-button">Cerrar sesión</button>
+      </router-link>
+      <deleteUser />
+      <userLogout />
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import deleteUser from "@/components/deleteUser.vue";
+import userLogout from "@/components/userLogout.vue";
 
 export default {
   name: "ExitView",
+  components: { deleteUser, userLogout },
 };
-
 </script>
 
 <style>
@@ -32,7 +36,7 @@ export default {
 }
 
 .secondary-button {
-  width:250px;
+  width: 250px;
   background-color: white;
   border: 1px solid #687684;
   color: black;
@@ -44,7 +48,7 @@ export default {
 }
 
 .secondary-button:hover {
-  background-color:black;
-  color:white;
+  background-color: black;
+  color: white;
 }
 </style>
