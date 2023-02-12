@@ -1,10 +1,39 @@
 <template>
-  <!-- <nav>
-    <router-link to="/"></router-link>
-    <router-link to="/about"></router-link>
-  </nav> -->
   <router-view/>
+  <div class="w-full fixed bottom-3 flex justify-content-around">
+      <NavbarPublic v-if="!isAuth" />
+      <NavbarPrivate v-else />
+  </div>
 </template>
+<script  lang="ts">
+import NavbarPublic from "@/components/NavbarPublic.vue";
+import NavbarPrivate from "@/components/NavbarPrivate.vue";
+import { useUsersStore } from "@/store/user";
+import { onMounted } from '@vue/runtime-core';
+import { ref } from "vue";
+
+
+export default {
+  name: "App",
+  components: {
+    NavbarPublic,
+    NavbarPrivate,
+  },
+  setup() {
+    const store = useUsersStore();
+    const isAuth = ref(store.isAuth)
+    
+    onMounted(() => {
+      store.fetchAuthUser()
+    })
+
+    return {
+      isAuth
+    }
+  },
+}
+</script>
+
 
 <style>
 #app {
@@ -27,3 +56,4 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+

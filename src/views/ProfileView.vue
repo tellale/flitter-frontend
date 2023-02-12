@@ -1,29 +1,46 @@
 <template>
-    <div>
-      <flitterHeader/>
-      <div v-if="!loading" class="UserView">
-        <div class="avatarimg">          
-          <img :src=userData?.avatar class="avatar">
-        </div>
-        <div class="profileDetails">
-          <h1>{{ userData?.name }}</h1> 
-          <h3>@{{ userData?.name }}</h3> 
-        </div>
-        <div class="followData">
-          <p><strong>{{ userData?.following.length }}</strong> Siguiendo</p> 
-          <p><strong>{{ userData?.followers.length }}</strong> Seguidores</p> 
-          </div>
+  <div>
+    <flitterHeader />
+    <div v-if="!loading" class="UserView">
+      <div class="avatarimg">
+        <img :src="userData?.avatar" class="avatar" />
+      </div>
+      <div class="profileDetails">
+        <h1>{{ userData?.name }}</h1>
+        <h3>@{{ userData?.name }}</h3>
+      </div>
+      <div class="followData">
+        <p>
+          <strong>{{ userData?.following.length }}</strong> Siguiendo
+        </p>
+        <p>
+          <strong>{{ userData?.followers.length }}</strong> Seguidores
+        </p>
+      </div>
 
-        <div class="flex items-center place-content-end text-md px-4 text-grey">
-          <div class="mr-10">
-            <div v-if="isFollowing">
-              <button v-show="isAuth" class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue" @click="followOrUnfollow()">Seguir</button>
-            </div>
-            <div v-else>          
-              <button  v-show="isAuth" class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue" @click="followOrUnfollow()">Dejar de seguir</button>
-            </div>
+      <div class="flex items-center place-content-end text-md px-4 text-grey">
+        <div class="mr-10">
+          <div v-if="isFollowing">
+            <button
+              v-show="isAuth"
+              class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue"
+              @click="followOrUnfollow()"
+            >
+              Seguir
+            </button>
+          </div>
+          <div v-else>
+            <button
+              v-show="isAuth"
+              class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue"
+              @click="followOrUnfollow()"
+            >
+              Dejar de seguir
+            </button>
           </div>
         </div>
+      </div>
+
 
         <div class="fleets">
           <h2> Fleets </h2> 
@@ -57,31 +74,30 @@
             class="w-full p-4 border-b hover:bg-ligther flex"/>
         </div>
       </div>
-      <div v-else>Cargando...</div>
     </div>
-  </template>
+    <div v-else>Cargando...</div>
+  </div>
+</template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, onMounted, ref } from 'vue';
-import flitterHeader from '@/components/flitterHeader.vue'
-import { useUsersStore } from '@/store/user';
-//import UserDetails from '../components/UserDetails.vue'
+import { computed, defineComponent, onBeforeMount, onMounted, ref } from "vue";
+import flitterHeader from "@/components/flitterHeader.vue";
+import { useUsersStore } from "@/store/user";
 import { useTweetsStore } from '@/store';
 import Tweet from '@/interfaces/Tweets';
 import TweetCard from '@/components/tweetCard.vue';
-//import tweetGet from '@/components/tweetGet.vue'
 
 export default defineComponent({
-  name: 'ProfileView',
+  name: "ProfileView",
   components: {
     flitterHeader,
     TweetCard
 },
   props: {
-        name: {
-            type: String,
-            required: true
-        }
+    name: {
+      type: String,
+      required: true,
+    },
   },
   setup(props) {
     const userStore = useUsersStore();
@@ -92,11 +108,11 @@ export default defineComponent({
     const userData = computed(() => {
       fetchData(userStore.user?._id);
       return userStore.user;
-    })
+    });
 
     const loading = computed(() => {
-       return userStore.isLoading;
-    })
+      return userStore.isLoading;
+    });
 
     //PAGINACIÓN
     const elementsPerPage = 10;
@@ -105,19 +121,20 @@ export default defineComponent({
     let totalPages = computed(() => {
       const pages = Math.ceil(tweetsStore.getTweetsLength / elementsPerPage);
       return pages;
-    })
+    });
 
     const getDataPage = (page: number) => {
       actualPage = page;
       paginatedData.value = [];
-      let ini = (page * elementsPerPage) - elementsPerPage;
-      let fin = (page * elementsPerPage);
-      paginatedData.value = tweetsStore.getTweets.slice(ini,fin)
-    }
+      let ini = page * elementsPerPage - elementsPerPage;
+      let fin = page * elementsPerPage;
+      paginatedData.value = tweetsStore.getTweets.slice(ini, fin);
+    };
 
     let paginatedData = ref<Tweet[]>([]);
     let thereAreTweets = ref<boolean>(false);
     async function fetchData(userId: number | undefined) {
+
         await tweetsStore.fetchUserTweets(userId);
         paginatedData.value = tweetsStore.getFirstTweets;
         if (paginatedData.value.length <= 0){
@@ -129,18 +146,19 @@ export default defineComponent({
     }
 
     const getPreviousPage = () => {
-      if(actualPage > 1){
+      if (actualPage > 1) {
         actualPage--;
       }
       getDataPage(actualPage);
-    }
-   
+    };
+
     const getNextPage = () => {
-      if(actualPage < totalPages.value){
+      if (actualPage < totalPages.value) {
         actualPage++;
       }
       getDataPage(actualPage);
-    }
+    };
+
 
     //AÑADIDO PARA EL CAMBIO DE ORDEN 
     // let tweets = ref<Tweet[]>([]);
@@ -165,20 +183,18 @@ export default defineComponent({
     }
 
     //SEGUIR Y DAR LIKES
-
     //FALTA MODIFICAR ESTA PROPIEDAD
-      const isFollowing = computed(() => {
+    const isFollowing = computed(() => {
       return true;
-    })
+    });
 
     const followOrUnfollow = () => {
       userStore.followOrUnfollowAUser(props.name);
       //Volvemos a acceder a los datos YA MODIFICADOS del usuario??
       userStore.fetchUser(props.name);
-    }
+    };
 
-
-    return{
+    return {
       userData,
       loading,
       isFollowing,
@@ -196,51 +212,51 @@ export default defineComponent({
       reverseOrder
     }
   },
-})
+});
 </script>
 
 <style scoped>
-.avatarimg{
+.avatarimg {
   margin-top: 10px;
   margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
 }
-.avatar{
+.avatar {
   margin-left: 30px;
-  width:200px;
-  height:200px;
-  border-radius:150px;
-  border:5px solid #0a0a0a;
+  width: 200px;
+  height: 200px;
+  border-radius: 150px;
+  border: 5px solid #0a0a0a;
 }
-.profileDetails{
+.profileDetails {
   margin-bottom: 20px;
   position: relative;
   text-align: left;
   margin-left: 50px;
 }
-h1{
-  font-family: 'Roboto', sans-serif;
+h1 {
+  font-family: "Roboto", sans-serif;
   font-weight: bold;
-  font-size:x-large;
+  font-size: x-large;
 }
-h3{
-  font-family: 'Roboto', sans-serif;
+h3 {
+  font-family: "Roboto", sans-serif;
   color: #687684;
 }
-.followData{
+.followData {
   display: flex;
   justify-content: left;
   margin-left: 40px;
 }
-p{
-  font-family: 'Roboto', sans-serif;
+p {
+  font-family: "Roboto", sans-serif;
   color: #687684;
   margin-left: 10px;
   margin-right: 10px;
 }
-h2{
-  color: #4C9EEB;
+h2 {
+  color: #4c9eeb;
   font-weight: bold;
   font-size: x-large;
 }

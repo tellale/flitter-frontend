@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import ExitView from "../views/ExitView.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,7 +19,6 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/profile/:name',
     name: 'profile',
-    //beforeEnter: [haveRoleGuard],
     component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue'),
     props: (route) => {
       const name = route.params.name
@@ -26,17 +26,20 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: '/exit',
+    name: 'exit',
+    component: ExitView,
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "login" */ '../views/LoginView.vue')
   },
-
   {
     path: '/register',
     name: 'register',
     component: () => import(/* webpackChunkName: "register" */ '../views/RegisterView.vue')
   }
-
 ]
 
 const router = createRouter({
