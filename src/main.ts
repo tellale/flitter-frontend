@@ -9,6 +9,9 @@ import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { faAngleDown, faCheck, faGear, faHashtag, faHomeUser, faMagnifyingGlass, faPlus, faRetweet, faStar, faUser } from '@fortawesome/free-solid-svg-icons'
 import { faComment, faFaceSmile, faHeart, faImage } from '@fortawesome/free-regular-svg-icons'
 
-library.add(faTwitter, faHomeUser, faHashtag, faUser,faAngleDown, faCheck, faPlus, faMagnifyingGlass, faGear, faStar, faImage, faFaceSmile, faStar, faComment, faRetweet, faHeart, faPlus)
+library.add(faTwitter, faHomeUser, faHashtag, faUser, faAngleDown, faCheck, faPlus, faMagnifyingGlass, faGear, faStar, faImage, faFaceSmile, faStar, faComment, faRetweet, faHeart, faPlus)
 
 createApp(App).use(createPinia()).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
+
+// $cookies.set('auth', 1000)
+// $cookie.isKey('auth')
