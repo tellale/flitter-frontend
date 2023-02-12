@@ -59,6 +59,12 @@ export const useTweetsStore = defineStore("tweets", {
             } catch (err) {
                 console.log(err)
             }
+        },
+        //AÑADIDO PARA EL CAMBIO DE ORDEN 
+        async reverseTweets() {
+            console.log(this.tweets)
+            this.tweets.reverse();
+            console.log(this.tweets)
         }
     },
 });

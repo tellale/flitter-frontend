@@ -28,8 +28,8 @@
         <div class="fleets">
           <h2> Fleets </h2> 
           <hr>
-          
-          <div class="paginationNav">
+
+          <div v-show="thereAreTweets" class="paginationNav">
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
                 <li class="page-item"><a class="page-link" @click="getPreviousPage()" >Anterior</a></li>
@@ -40,46 +40,12 @@
           </div>
 
           <!-- <tweetGet/> -->
-          <div
+          <TweetCard     
             v-for="tweet in paginatedData"
             :key="tweet._id"
-            class="w-full p-4 border-b hover:bg-ligther flex"
-          >
-            <div class="flex-none mr-4">
-              <img src="https://i.pravatar.cc/300" class="h-16 w-16 rounded-full flex-none">
-            </div>
-            <div class="w-full">
-              <div class="flex flex-wrap items-center text-left w-full">
-                <p class="font-semibold">{{ tweet.postedBy.name }}</p>
-                <p
-                  class="text-sm text-lightblue ml-2"
-                  v-for="tag in tweet.tags"
-                  :key="tag"
-                >
-                  {{ tag }}
-                </p>
-                <p class="text-sm text-lightblue ml-2">{{ tweet.updatedAt }}</p>
-              </div>
-              <p class="text-left py-3">{{ tweet.text }}</p>
-
-                <div class="flex items-center place-content-end text-md px-4 text-grey">
-                    <div class="mr-10">
-                        <button v-show="isAuth" class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue">
-                            Seguir
-                        </button>
-                    </div>
-                    <button v-show="isAuth" @click="addLike(tweet._id)" class="flex items-center place-content-end hover:text-lightblue">
-                        <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
-                        <p>{{ tweet.likes.length }}</p>
-                    </button>
-                    <div v-show="!isAuth" class="flex items-center place-content-end">
-                        <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
-                        <p>{{ tweet.likes.length }}</p>
-                    </div>
-                    
-                </div>
-            </div>
-          </div>
+            :tweet="tweet"
+            :avatar = userData?.avatar
+            class="w-full p-4 border-b hover:bg-ligther flex"/>
         </div>
       </div>
       <div v-else>Cargando...</div>
@@ -93,15 +59,15 @@ import { useUsersStore } from '@/store/user';
 //import UserDetails from '../components/UserDetails.vue'
 import { useTweetsStore } from '@/store';
 import Tweet from '@/interfaces/Tweets';
+import TweetCard from '@/components/tweetCard.vue';
 //import tweetGet from '@/components/tweetGet.vue'
 
 export default defineComponent({
   name: 'ProfileView',
   components: {
     flitterHeader,
-    //tweetGet,
-    //UserDetails,
-  },
+    TweetCard
+},
   props: {
         name: {
             type: String,
@@ -141,10 +107,16 @@ export default defineComponent({
     }
 
     let paginatedData = ref<Tweet[]>([]);
-
+    let thereAreTweets = ref<boolean>(false);
     async function fetchData(userId: number | undefined) {
         await tweetsStore.fetchUserTweets(userId);
         paginatedData.value = tweetsStore.getFirstTweets;
+        if (paginatedData.value.length <= 0){
+          thereAreTweets.value = false;
+        }else{
+          thereAreTweets.value = true;
+        }
+        console.log(paginatedData.value.length)
     }
 
     const getPreviousPage = () => {
@@ -178,9 +150,6 @@ export default defineComponent({
       userStore.fetchUser(props.name);
     }
 
-    const addLike = async (tweetId: number) => {
-      tweetsStore.likeTweet(tweetId) 
-    } 
 
     return{
       userData,
@@ -195,8 +164,8 @@ export default defineComponent({
       getNextPage,
       paginatedData,
       isActive,
+      thereAreTweets
       // tweets,
-      addLike,
     }
   },
 })
