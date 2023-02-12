@@ -3,10 +3,12 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import Tweet from "@/interfaces/Tweets";
 
+
 export const useTweetsStore = defineStore("tweets", {
   state: () => ({
     tweets: [] as Tweet[],
     isLoading: false,
+
   }),
   getters: {
     getTweets(state) {
