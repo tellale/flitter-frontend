@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from 'axios'
-import { User } from "../interfaces/User";
+import { AuthUser } from "../interfaces/AuthUser";
 import { UserRequest } from "@/interfaces/UserRequest";
 import router from "@/router";
 
@@ -54,7 +54,7 @@ export const useAuthStore = defineStore("auth", {
           
         },
         
-        async handleRegister (user: User) {
+        async handleRegister (user: AuthUser) {
          const { data } =  await axios.post('/api/register', {
             name: user.name,
             email: user.email,
