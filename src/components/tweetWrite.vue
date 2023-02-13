@@ -58,7 +58,7 @@ export default {
                 } catch (err) {
                     console.log(err)
                 } finally {
-                    store.fetchTweets({})
+                    store.fetchTweets()
                     router.push({
                         path: '/'
                     })

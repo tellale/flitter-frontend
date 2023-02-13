@@ -1,9 +1,9 @@
 <template>
-    <div class="mx-auto mt-10 w-80">
-      <flitterHeader/> 
-  <form
-    class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-    @submit.prevent="authStore.handleRegister(userForm)"
+  <div class="container-flex container mx-auto mt-10 w-80">
+    <flitterHeader />
+    <form
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      @submit.prevent="authStore.handleRegister(userForm)"
     >
       <div class="mb-4">
         <label
