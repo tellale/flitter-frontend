@@ -25,7 +25,6 @@ export const useTweetsStore = defineStore("tweets", {
         const res = await axios.get(`/api/tweet?page=${page}&limit=${limit}`);
         this.tweets = res.data[0].tweets;
       } catch (err) {
-        alert(err);
         console.log(err);
       }
     },
@@ -40,10 +39,11 @@ export const useTweetsStore = defineStore("tweets", {
 
     async fetchUserTweets(userId: number | undefined) {
       try {
-        const data = await axios.get(`/api/tweet/user/${userId}`);
-        this.tweets = data.data[0].tweets.reverse();
+        if (userId) {
+          const {data} = await axios.get(`/api/tweet/user/${userId}`);
+          this.tweets = data?.[0]?.tweets?.reverse() ?? [];
+        }
       } catch (err) {
-        alert(err);
         console.log(err);
       }
     },

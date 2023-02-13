@@ -7,7 +7,6 @@
         <button @click="visitUserProfile(tweet.postedBy.name)">
           <p class="font-semibold">{{ tweet.postedBy.name }}</p>
         </button>
-        <p class="font-semibold">{{ tweet.postedBy.name }}</p>
         <p
             class="text-sm text-lightblue ml-2"
             v-for="tag in tweet.tags"

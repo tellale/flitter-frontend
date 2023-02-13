@@ -44,6 +44,7 @@ export const useUsersStore = defineStore("users", {
         if (data?.user) {
           this.isAuth = true
           this.authUser = data?.user
+          console.log(this.authUser)
         }
         return data?.user ?? {};
       } catch (err) {
@@ -66,9 +67,18 @@ export const useUsersStore = defineStore("users", {
         const { data } = await axios.put(`/api/user/follow/${user}`);
         console.log(data);
       } catch (err) {
-        alert("Error 403: No puedes seguir a un miembro sin estar logeado");
         console.log(err);
       }
     },
+
+    amIFollowing(){
+      for (let i = 0; i < this.authUser.following.length; i++) {
+        if(this.authUser.following[i] == this.user?._id){
+          return true;
+        }else{
+          return false;
+        }
+      }
+    }
   },
 });
