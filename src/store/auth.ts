@@ -22,7 +22,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: null,
     isAuthenticated: false,
-    authUser: null,
+    authUser: {},
   }),
 
   getters: {
@@ -35,7 +35,6 @@ export const useAuthStore = defineStore("auth", {
       const data = await axios.get("/api/user");
       this.authUser = data.data;
     },
-
     async handleLogin(user: UserRequest) {
       try {
         const { data } = await axios.post("/api/login", {
@@ -43,12 +42,11 @@ export const useAuthStore = defineStore("auth", {
           password: user.password,
         });
         setCookie(data.token[0], data.token[1]);
-        return router.push({ name: "home" });
+        return window.location.replace("/");
       } catch (error: any) {
         console.error(error?.message);
       }
     },
-
     async handleRegister(user: AuthUser) {
       const { data } = await axios.post("/api/register", {
         name: user.name,
@@ -57,12 +55,11 @@ export const useAuthStore = defineStore("auth", {
         password2: user.password2,
       });
       setCookie(data.token[0], data.token[1]);
-      return router.push({ name: "home" });
+      return window.location.replace("/");
     },
-    handleLogout() {
-      this.authUser = null;
+    async handleLogout() {
       eraseCookie("express:sess");
-      return router.push({ name: "login" });
+      return window.location.replace("/login");
     },
   },
 });

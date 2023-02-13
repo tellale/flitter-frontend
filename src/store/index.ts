@@ -40,7 +40,7 @@ export const useTweetsStore = defineStore("tweets", {
     async fetchUserTweets(userId: number | undefined) {
       try {
         if (userId) {
-          const {data} = await axios.get(`/api/tweet/user/${userId}`);
+          const { data } = await axios.get(`/api/tweet/user/${userId}`);
           this.tweets = data?.[0]?.tweets?.reverse() ?? [];
         }
       } catch (err) {
@@ -54,15 +54,11 @@ export const useTweetsStore = defineStore("tweets", {
         this.tweets = data.data;
       } catch (err) {
         console.log(err);
-        }
-       
+      }
     },
-    //AÑADIDO PARA EL CAMBIO DE ORDEN 
+    //AÑADIDO PARA EL CAMBIO DE ORDEN
     async reverseTweets() {
-        console.log(this.tweets)
-        this.tweets.reverse();
-        console.log(this.tweets)
-    }
-
+      this.tweets.reverse();
+    },
   },
 });

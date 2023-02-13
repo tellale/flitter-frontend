@@ -8,7 +8,7 @@ export const useUsersStore = defineStore("users", {
     isLoading: false,
     user: undefined as User | undefined,
     isAuth: false,
-    authUser: {} as User
+    authUser: {} as User,
   }),
   getters: {
     getUsers(state) {
@@ -42,9 +42,8 @@ export const useUsersStore = defineStore("users", {
         this.isLoading = false;
 
         if (data?.user) {
-          this.isAuth = true
-          this.authUser = data?.user
-          console.log(this.authUser)
+          this.isAuth = true;
+          this.authUser = data?.user;
         }
         return data?.user ?? {};
       } catch (err) {
@@ -61,24 +60,36 @@ export const useUsersStore = defineStore("users", {
         console.log(err);
       }
     },
-    
-    async followOrUnfollowAUser(user: string) {
+
+    async followOrUnfollowAUser(
+      currentState: boolean,
+      user: string
+    ): Promise<void> {
       try {
         const { data } = await axios.put(`/api/user/follow/${user}`);
-        console.log(data);
+        if (this.user?._id !== undefined) {
+          if (!currentState) {
+            this.authUser.following.push(this.user._id);
+            this.user.followers.push(this.authUser._id);
+          } else {
+            const authUserIndex = this.authUser.following.indexOf(
+              this.user._id
+            );
+            this.authUser.following.splice(authUserIndex, 1);
+            const userIndex = this.user.followers.indexOf(this.authUser._id);
+            this.user.followers.splice(userIndex, 1);
+          }
+        }
       } catch (err) {
         console.log(err);
       }
     },
 
-    amIFollowing(){
-      for (let i = 0; i < this.authUser.following.length; i++) {
-        if(this.authUser.following[i] == this.user?._id){
-          return true;
-        }else{
-          return false;
-        }
+    amIFollowing(): boolean {
+      if (this.user?._id !== undefined) {
+        return this.authUser.following.includes(this.user._id);
       }
-    }
+      return false;
+    },
   },
 });
