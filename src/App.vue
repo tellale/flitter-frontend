@@ -1,17 +1,15 @@
 <template>
-  <router-view/>
+  <router-view />
   <div class="w-full fixed bottom-3 flex justify-content-around">
-      <NavbarPublic v-if="!store.isAuth" />
-      <NavbarPrivate v-else />
+    <NavbarPublic v-if="!store.isAuth" />
+    <NavbarPrivate v-else />
   </div>
 </template>
-<script  lang="ts">
+<script lang="ts">
 import NavbarPublic from "@/components/NavbarPublic.vue";
 import NavbarPrivate from "@/components/NavbarPrivate.vue";
 import { useUsersStore } from "@/store/user";
-import { onBeforeMount, onMounted, onUpdated } from '@vue/runtime-core';
-import { ref } from "vue";
-
+import { onBeforeMount } from "@vue/runtime-core";
 
 export default {
   name: "App",
@@ -21,14 +19,13 @@ export default {
   },
   setup() {
     const store = useUsersStore();
-    onBeforeMount(async() => await store.fetchAuthUser())
+    onBeforeMount(async () => await store.fetchAuthUser());
     return {
-      store
-    }
+      store,
+    };
   },
-}
+};
 </script>
-
 
 <style>
 #app {
@@ -51,4 +48,3 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
-
