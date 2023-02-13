@@ -12,6 +12,3 @@ import { faComment, faFaceSmile, faHeart, faImage } from '@fortawesome/free-regu
 library.add(faTwitter, faHomeUser, faHashtag, faUser, faAngleDown, faCheck, faPlus, faMagnifyingGlass, faGear, faStar, faImage, faFaceSmile, faStar, faComment, faRetweet, faHeart, faPlus)
 
 createApp(App).use(createPinia()).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
-
-// $cookies.set('auth', 1000)
-// $cookie.isKey('auth')
