@@ -13,13 +13,13 @@
         <button class="text-lightblue p-2 border rounded-full mx-3 mt-3 hover:bg-lightblue hover:text-white" @click="previousPage">Anterior</button>
         <ul>
           <li v-for="page in totalPages" :key="page">
-            <button @click="goPage">{{ page }}</button>
+            <button >{{ page }}</button>
           </li>
         </ul>
         <button class="text-lightblue p-2 border rounded-full mx-3 mt-3 hover:bg-lightblue hover:text-white" @click="newPage">Siguiente</button>
       </div>    
       
-      <div v-if="isAuth" class="fixed z-10 bottom-20 right-5">
+      <div v-if="userStore.isAuth" class="fixed z-10 bottom-20 right-5">
         <button @click="click">
           <font-awesome-icon
             icon="fa-solid fa-plus"
@@ -37,8 +37,9 @@ import tweetGet from "@/components/tweetGet.vue";
 import flitterHeader from "@/components/flitterHeader.vue";
 import { useRouter } from "vue-router";
 import { useTweetsStore } from "../store/index";
-import { onMounted, onUpdated } from '@vue/runtime-core';
+import { onMounted, onBeforeMount } from '@vue/runtime-core';
 import { ref, computed } from "vue";
+import { useUsersStore } from '../store/user'
 
 
 
@@ -52,7 +53,9 @@ export default {
   setup() {
     const store = useTweetsStore()
     const state = ref({page: 0, limit: 10})
-    
+    const userStore = useUsersStore();
+
+    onBeforeMount(async() => await userStore.fetchAuthUser())
     
     onMounted(() => {
       console.log('data mounted');
@@ -62,8 +65,6 @@ export default {
     const tweets = computed(() => {
       return store.tweets;
     });
-
-    const isAuth = ref(true)
     
     const router = useRouter()
     const click = () => {
@@ -73,8 +74,10 @@ export default {
     }
     
     let totalPages = () => {
-      return state.value.limit / store.getTweetsLength
+      return Math.ceil(state.value.limit / store.getTweetsLength)
     }
+
+    //missing the function to go to the page you click. 
 
     
     const newPage = () => {
@@ -91,9 +94,8 @@ export default {
 
 
     return {
-      isAuth, 
+      userStore,
       click,
-      isAuth,
       tweets,
       newPage,
       previousPage,

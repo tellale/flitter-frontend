@@ -34,14 +34,14 @@
           </button>
         </div> -->
         <button
-          v-show="isAuth"
+          v-show="userStore.isAuth"
           @click="addLike(tweet._id)"
           class="flex items-center place-content-end hover:text-lightblue"
         >
           <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
           <p>{{ tweet.likes.length }}</p>
         </button>
-        <div v-show="!isAuth" class="flex items-center place-content-end">
+        <div v-show="!userStore.isAuth" class="flex items-center place-content-end">
           <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
           <p>{{ tweet.likes.length }}</p>
         </div>
@@ -57,6 +57,8 @@ import { useTweetsStore } from "../store/index";
 import moment from 'moment'
 import { useRouter } from 'vue-router'
 import Tweet from '@/interfaces/Tweets';
+import { useUsersStore } from '../store/user'
+import { onBeforeMount } from '@vue/runtime-core';
 
 export default {
   name: "tweetGet",
@@ -68,8 +70,10 @@ export default {
   },
   setup() {
     const store = useTweetsStore();
-    const isAuth = ref(true)
     const router = useRouter()
+    const userStore = useUsersStore();
+
+    onBeforeMount(async() => await userStore.fetchAuthUser())
 
 
     const addLike = async (tweetId: number) => {
@@ -90,10 +94,10 @@ export default {
     return {
       //getTweets,
       //tweets,
+      userStore,
       addLike,
       timeAgoDate,
       visitUserProfile,
-      isAuth,
     };
   },
 };
