@@ -17,10 +17,10 @@
       <div class="flex items-center place-content-end text-md px-4 text-grey">
         <div class="mr-10">
           <div v-if="!isFollowing">
-            <button v-show="isAuth" class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue" @click="followOrUnfollow()">Seguir</button>
+            <button v-show="isAuth" class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue" @click="followOrUnfollow()" :disabled="!isFinished">Seguir</button>
           </div>
           <div v-else>          
-            <button  v-show="isAuth" class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue" @click="followOrUnfollow()">Dejar de seguir</button>
+            <button  v-show="isAuth" class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue" @click="followOrUnfollow()" :disabled="!isFinished">Dejar de seguir</button>
           </div>
         </div>
       </div>
@@ -166,43 +166,20 @@ setup(props) {
   //HASTA AQUI 
 
   //SEGUIR Y DEJAR DE SEGUIR 
-  // const isFollowing = computed(() => {
-  //   const userId: number | undefined = userStore.user?._id;
-  //   const followingList: string[] = userStore.authUser.following;
-  //   return followingList.includes(userId?.toString() ?? '');
-  // })
+  let isFollowing = ref<boolean>(false);
+  let isFinished = ref<boolean>(true);
 
-  // let isFollowing = ref<boolean>(false);
+  function delay(time: number) {
+    return new Promise(resolve => setTimeout(resolve, time));
+  }
 
-  // watchEffect(()=>{
-  //   const userId: string | undefined = userStore.authUser?._id.toString();
-  //   //const followersList: User[] = userData.value?.followers;
-  //   if (userData.value?.followers.includes(userId ?? '')){
-  //     isFollowing.value = true;
-  //   }
-  //   console.log(userData.value)
-  // })
-
-    let isFollowing = ref<boolean>(false);
-
-    watchEffect(()=>{
-      for (let i = 0; i < userStore.authUser.following.length; i++) {
-        if(userStore.authUser.following[i] == userData.value?._id){
-          isFollowing.value = true;
-        }
-      }
-    })
-
-    //let isFollowing = ref<boolean | undefined>(false);
-    // let isFollowing = reactive(() => {
-    //   console.log(userStore.amIFollowing)
-    //  return userStore.amIFollowing;
-    // })
-
-  const followOrUnfollow = async() => {
-    await userStore.followOrUnfollowAUser(props.name);
-    await userStore.fetchUser(props.name);
-    //isFollowing.value = userStore.amIFollowing;
+  const followOrUnfollow = async() => {  
+    // await userStore.fetchUser(props.name); 
+    // await userStore.fetchAuthUser(); 
+    isFinished.value = false;
+    await userStore.followOrUnfollowAUser(isFollowing.value, props.name);
+    isFollowing.value = userStore.amIFollowing();
+    delay(1000).then(() => isFinished.value = true);
   }
 
   return{
@@ -220,7 +197,8 @@ setup(props) {
     isActive,
     thereAreTweets,
     //AÑADIDO PARA EL CAMBIO DE ORDEN 
-    reverseOrder
+    reverseOrder,
+    isFinished
   }
 },
 })
@@ -270,5 +248,9 @@ h2{
 color: #4C9EEB;
 font-weight: bold;
 font-size: x-large;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
 }
 </style>

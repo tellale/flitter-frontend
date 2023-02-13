@@ -4,7 +4,7 @@ export default interface User {
     email: string,
     avatar: string,
     passwordHash: string,
-    followers: [],
-    following: [],
+    followers: Array<number>,
+    following: Array<number>,
     date: Date
 }
