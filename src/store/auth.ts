@@ -42,7 +42,7 @@ export const useAuthStore = defineStore("auth", {
           password: user.password,
         });
         setCookie(data.token[0], data.token[1]);
-        return router.push({ name: "home" });
+        return window.location.replace("/");
       } catch (error: any) {
         console.error(error?.message);
       }
@@ -55,7 +55,7 @@ export const useAuthStore = defineStore("auth", {
         password2: user.password2,
       });
       setCookie(data.token[0], data.token[1]);
-      return router.push({ name: "home" });
+      return window.location.replace("/");
     },
     async handleLogout() {
       eraseCookie("express:sess");

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto mt-10 w-80">
+  <div class="container-flex container mx-auto mt-10 w-80">
     <flitterHeader />
     <form
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -152,6 +152,9 @@ export default {
 </script>
 
 <style>
+.container-flex {
+  flex-direction: column;
+}
 .link {
   text-decoration: none;
 }
