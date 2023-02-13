@@ -59,7 +59,7 @@ export const useAuthStore = defineStore("auth", {
     },
     async handleLogout() {
       eraseCookie("express:sess");
-      return router.push({ name: "login" });
+      return window.location.replace("/login");
     },
   },
 });
