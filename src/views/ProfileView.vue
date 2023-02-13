@@ -96,9 +96,9 @@
           class="w-full p-4 border-b hover:bg-ligther flex"
         />
       </div>
-    <!-- </div>
-      <div v-else>Cargando...</div>
-  </div> -->
+    </div>
+    <div v-else>Cargando...</div>
+  </div>
 </template>
 
 <script lang="ts">
