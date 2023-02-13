@@ -8,7 +8,7 @@ export const useUsersStore = defineStore("users", {
     isLoading: false,
     user: undefined as User | undefined,
     isAuth: false,
-    authUser: {} as User
+    authUser: {} as User,
   }),
   getters: {
     getUsers(state) {
@@ -42,9 +42,8 @@ export const useUsersStore = defineStore("users", {
         this.isLoading = false;
 
         if (data?.user) {
-          this.isAuth = true
-          this.authUser = data?.user
-          console.log(this.authUser)
+          this.isAuth = true;
+          this.authUser = data?.user;
         }
         return data?.user ?? {};
       } catch (err) {
@@ -61,7 +60,7 @@ export const useUsersStore = defineStore("users", {
         console.log(err);
       }
     },
-    
+
     async followOrUnfollowAUser(user: string) {
       try {
         const { data } = await axios.put(`/api/user/follow/${user}`);
@@ -71,14 +70,14 @@ export const useUsersStore = defineStore("users", {
       }
     },
 
-    amIFollowing(){
+    amIFollowing() {
       for (let i = 0; i < this.authUser.following.length; i++) {
-        if(this.authUser.following[i] == this.user?._id){
+        if (this.authUser.following[i] == this.user?._id) {
           return true;
-        }else{
+        } else {
           return false;
         }
       }
-    }
+    },
   },
 });
