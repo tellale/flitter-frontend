@@ -26,7 +26,7 @@
             </nav>
           </div>
       
-      <div v-if="isAuth" class="fixed z-10 bottom-20 right-5">
+      <div v-if="userStore.isAuth" class="fixed z-10 bottom-20 right-5">
         <button @click="click">
           <font-awesome-icon
             icon="fa-solid fa-plus"
@@ -45,8 +45,9 @@ import flitterHeader from "@/components/flitterHeader.vue";
 import { useRouter } from "vue-router";
 import { useTweetsStore } from "../store/index";
 import { onMounted } from '@vue/runtime-core';
-import { ref, computed } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import Tweet from '@/interfaces/Tweets';
+import { useUsersStore } from "@/store/user";
 
 
 
@@ -59,7 +60,9 @@ export default {
   },
   setup() {
     const store = useTweetsStore()
-    const isAuth = ref(false)
+    const userStore = useUsersStore()
+
+    onBeforeMount(async () => await userStore.fetchAuthUser());
 
     onMounted(() => {
       store.fetchTweets(0, 10)
@@ -110,7 +113,7 @@ export default {
     }
 
     return {
-      isAuth, 
+      userStore, 
       click,
       totalPages,
       getDataPage,

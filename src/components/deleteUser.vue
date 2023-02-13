@@ -18,9 +18,9 @@ export default {
     const router = useRouter();
     const deleteUser = async () => {
       try {
-        await axios.delete("api/users");
+        await axios.delete("/api/user");
         store.isAuth = false;
-        router.push({ name: "home" });
+        router.push({ name: "goodbye" });
       } catch (error) {
         console.error(error);
       }

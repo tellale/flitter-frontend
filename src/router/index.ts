@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ExitView from "../views/ExitView.vue";
+import GoodByeView from "../views/GoodByeView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -31,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/dashboard",
     name: "exit",
     component: ExitView,
+  },
+  {
+    path: "/goodbye",
+    name: "goodbye",
+    component: GoodByeView,
   },
   {
     path: "/login",
