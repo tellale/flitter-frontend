@@ -7,6 +7,11 @@ export const useTweetsStore = defineStore("tweets", {
   state: () => ({
     tweets: [] as Tweet[],
     isLoading: false,
+    filters: {
+      page: 0,
+      limit: 20,
+      search: "",
+    },
   }),
   getters: {
     getTweets(state) {
@@ -20,9 +25,11 @@ export const useTweetsStore = defineStore("tweets", {
     },
   },
   actions: {
-    async fetchTweets(page = 0, limit = 20) {
+    async fetchTweets(page = 0, limit = 20, search = "") {
       try {
-        const res = await axios.get(`/api/tweet?page=${page}&limit=${limit}`);
+        const res = await axios.get(
+          `/api/tweet?page=${page}&limit=${limit}&search=${search}`
+        );
         this.tweets = res.data[0].tweets;
       } catch (err) {
         console.log(err);

@@ -3,10 +3,6 @@
     <router-link to="/">
       <img class="w-10 h-10" src="@/assets/image2.png" />
     </router-link>
-    <!--add search-->
-    <router-link to="/">
-      <img class="w-10 h-10" src="@/assets/image4.png" />
-    </router-link>
     <img
       v-on:click="handleRedirectSelector"
       class="avatar-img"

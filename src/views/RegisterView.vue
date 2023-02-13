@@ -1,98 +1,41 @@
 <template>
-  <div class="container-flex container mx-auto mt-10 w-80">
+  <div class="auth-container">
     <flitterHeader />
-    <form
-      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      @submit.prevent="authStore.handleRegister(userForm)"
-    >
-      <div class="mb-4">
-        <label
-          class="block text-gray-700 text-sm font-bold mb-2"
-          for="username"
-        >
-        </label>
-        <input
-          v-model="userForm.name"
-          class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="username"
-          type="text"
-          placeholder="Nombre de usuario"
-        />
-        <span v-for="error in v$.name.$errors" :key="error.$uid">{{
-          error.$message
-        }}</span>
-        <p class="pt-1">
-          Únicamente letras mayúsculas o minúsculas, sin caracteres especiales,
-          número o el carácter.
-        </p>
-      </div>
-
-      <div class="mb-6">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-        </label>
-        <input
-          v-model="userForm.email"
-          class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="email"
-          type="email"
-          placeholder="E-mail"
-        />
-        <span v-for="error in v$.email.$errors" :key="error.$uid">{{
-          error.$message
-        }}</span>
-      </div>
-
-      <div class="mb-6">
-        <label
-          class="block text-gray-700 text-sm font-bold mb-2"
-          for="password"
-        >
-        </label>
-        <input
-          v-model="userForm.password"
-          class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="password"
-          type="password"
-          placeholder="Contraseña"
-        />
-        <span v-for="error in v$.password.$errors" :key="error.$uid">{{
-          error.$message
-        }}</span>
-      </div>
-
-      <div class="mb-6">
-        <label
-          class="block text-gray-700 text-sm font-bold mb-2"
-          for="password2"
-        >
-        </label>
-        <input
-          v-model="userForm.password2"
-          class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="password2"
-          type="password"
-          placeholder="Confirmar contraseña"
-        />
-        <span v-for="error in v$.password2.$errors" :key="error.$uid">{{
-          error.$message
-        }}</span>
-      </div>
-
-      <div class="flex items-center justify-center pt-5">
-        <button
-          @click="onSubmit"
-          type="submit"
-          class="bg-black hover:bg-gray-500 text-base text-white font-bold w-full py-2 px-4 mb-5 rounded-full focus:outline-none focus:shadow-outline"
-        >
-          Crear una cuenta
-        </button>
-      </div>
-
-      <router-link
-        class="text-xs link hover:text-blue-500"
-        :to="{ name: 'login' }"
-        >¿Ya tienes cuenta?</router-link
-      >
+    <form @submit.prevent="authStore.handleRegister(userForm)">
+      <input
+        v-model="userForm.name"
+        id="username"
+        type="text"
+        placeholder="Nombre de usuario"
+      />
+      <p>
+        Únicamente letras mayúsculas o minúsculas, sin caracteres especiales,
+        número o el carácter.
+      </p>
+      <input
+        v-model="userForm.email"
+        id="email"
+        type="email"
+        placeholder="E-mail"
+      />
+      <input
+        v-model="userForm.password"
+        id="password"
+        type="password"
+        placeholder="Contraseña"
+      />
+      <input
+        v-model="userForm.password2"
+        id="password2"
+        type="password"
+        placeholder="Confirmar contraseña"
+      />
+      <button class="button-black" @click="onSubmit" type="submit">
+        Crear una cuenta
+      </button>
+      <button>
+        <router-link :to="{ name: 'login' }">¿Ya tienes cuenta?</router-link>
+      </button>
     </form>
   </div>
 </template>
@@ -152,13 +95,52 @@ export default {
 </script>
 
 <style>
-.container-flex {
+.auth-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
 }
-.link {
-  text-decoration: none;
+.auth-container form {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
-p {
-  font-size: 11px;
+.auth-container input {
+  position: relative;
+  margin: 1rem 2rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+  background-color: #eee;
+  border-radius: 2rem;
+  width: calc(100% - 6rem);
+}
+.auth-container input:last-of-type {
+  margin-bottom: 4rem;
+}
+.auth-container p {
+  font-size: 0.7rem;
+  width: calc(100% - 6rem);
+}
+.auth-container button {
+  position: relative;
+  padding: 1rem;
+  margin: 1rem 2rem;
+  border: 1px solid #ddd;
+  border-radius: 5rem;
+  width: calc(100% - 6rem);
+}
+.auth-container .button-black {
+  position: relative;
+  border: unset;
+  background-color: black;
+  color: white;
 }
 </style>

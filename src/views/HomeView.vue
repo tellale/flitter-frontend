@@ -1,9 +1,10 @@
 /* eslint-disable */
 <template>
-  <div id="app" class="flex h-screen w-full">
+  <div id="app" class="home-container flex h-screen w-full">
     <!-- Tweets -->
     <div class="w-full h-full overflow-y-scroll static">
       <flitterHeader />
+      <searchBar />
       <tweetGet />
       <div class="paginationNav">
         <nav>
@@ -52,13 +53,14 @@
 
 <script lang="ts">
 import tweetGet from "@/components/tweetGet.vue";
-
 import flitterHeader from "@/components/flitterHeader.vue";
+import searchBar from "@/components/searchBar.vue";
+
 import { useRouter } from "vue-router";
 import { useTweetsStore } from "@/store/index";
 import { useUsersStore } from "@/store/user";
 
-import { onBeforeMount, onMounted } from "@vue/runtime-core";
+import { onBeforeMount, onMounted, onUpdated } from "@vue/runtime-core";
 import { ref, computed } from "vue";
 import Tweet from "@/interfaces/Tweets";
 
@@ -67,13 +69,28 @@ export default {
   components: {
     tweetGet,
     flitterHeader,
+    searchBar,
   },
   setup() {
     const store = useTweetsStore();
     const userStore = useUsersStore();
     onBeforeMount(async () => await userStore.fetchAuthUser());
     onMounted(() => {
-      store.fetchTweets(0, 10);
+      store.fetchTweets(
+        // STATE PARAMETERS TO INJECT TO BACKEND QUERY
+        store.filters.page,
+        store.filters.limit,
+        store.filters.search
+      );
+    });
+
+    onUpdated(() => {
+      store.fetchTweets(
+        // STATE PARAMETERS TO INJECT TO BACKEND QUERY
+        store.filters.page,
+        store.filters.limit,
+        store.filters.search
+      );
     });
 
     const router = useRouter();
@@ -133,3 +150,8 @@ export default {
   },
 };
 </script>
+<style>
+.home-container {
+  margin-bottom: 4rem;
+}
+</style>

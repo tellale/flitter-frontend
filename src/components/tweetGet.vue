@@ -59,7 +59,6 @@ import { computed, ref } from "vue";
 import { useTweetsStore } from "../store/index";
 import moment from "moment";
 import { useRouter } from "vue-router";
-import Tweet from "@/interfaces/Tweets";
 
 export default {
   name: "tweetGet",

@@ -3,10 +3,6 @@
     <button v-on:click="handleOpenModal">
       <img class="w-10 h-10" src="@/assets/image3.png" />
     </button>
-    <!--add search-->
-    <router-link to="/">
-      <img class="w-10 h-10" src="@/assets/image4.png" />
-    </router-link>
   </header>
   <div v-if="toggle" class="body-wrapper" v-on:click="handleCloseModal">
     <div class="body-modal">
