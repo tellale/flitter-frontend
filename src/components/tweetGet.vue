@@ -6,7 +6,7 @@
   >
     <div class="flex-none mr-4">
       <img
-        :src="tweet.postedBy.avatar"
+        :src="tweet?.postedBy?.avatar"
         class="h-16 w-16 rounded-full flex-none"
       />
     </div>
@@ -22,7 +22,9 @@
         >
           {{ tag }}
         </p>
-        <p class="text-grey text-sm ml-1">· {{ timeAgoDate(tweet.updatedAt) }}</p>
+        <p class="text-grey text-sm ml-1">
+          · {{ timeAgoDate(tweet.updatedAt) }}
+        </p>
       </div>
       <p class="text-left py-3">{{ tweet.text }}</p>
 
@@ -55,34 +57,34 @@
 <script lang="ts">
 import { computed, ref } from "vue";
 import { useTweetsStore } from "../store/index";
-import moment from 'moment'
-import { useRouter } from 'vue-router'
-import Tweet from '@/interfaces/Tweets';
+import moment from "moment";
+import { useRouter } from "vue-router";
+import Tweet from "@/interfaces/Tweets";
 
 export default {
   name: "tweetGet",
   setup() {
     const store = useTweetsStore();
-    const isAuth = ref(true)
-    const router = useRouter()
+    const isAuth = ref(true);
+    const router = useRouter();
 
-    const tweets = computed(()=>{
+    const tweets = computed(() => {
       return store.tweets;
-    })
+    });
 
     const addLike = async (tweetId: number) => {
-        store.likeTweet(tweetId) 
-    }
-    
-    const timeAgoDate = (date: Date) => {
-      return moment(date).fromNow()
-    }
+      store.likeTweet(tweetId);
+    };
 
-    const visitUserProfile = (name:string) => {
-        router.push({
-            path: `/profile/${name}`
-        })
-    }
+    const timeAgoDate = (date: Date) => {
+      return moment(date).fromNow();
+    };
+
+    const visitUserProfile = (name: string) => {
+      router.push({
+        path: `/profile/${name}`,
+      });
+    };
 
     return {
       //getTweets,
