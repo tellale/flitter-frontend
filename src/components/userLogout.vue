@@ -5,20 +5,15 @@
 </template>
 
 <script lang="ts">
-import axios from "axios";
-import { useUsersStore } from "@/store/user";
-import { useRouter } from "vue-router";
+import { useAuthStore } from "@/store/auth";
 
 export default {
   name: "userLogout",
   setup() {
-    const router = useRouter();
-    const userStore = useUsersStore();
-    const userLogout = async () => {
+    const authStore = useAuthStore()
+    const userLogout = () => {
       try {
-        await axios.delete("api/logout");
-        userStore.isAuth = false;
-        router.push({ name: "home" });
+        authStore.handleLogout()
       } catch (error) {
         console.error(error);
       }

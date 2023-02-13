@@ -2,7 +2,7 @@
 
 <header class="header">
     
-  <router-link to="/profile">
+  <router-link to="/login">
   <img class="w-10 h-10" src="@/assets/image3.png"/>
   </router-link>
 <!--add search-->
