@@ -9,9 +9,10 @@ export const useTweetsStore = defineStore("tweets", {
     isLoading: false,
     filters: {
       page: 0,
-      limit: 20,
+      limit: 10,
       search: "",
     },
+    totalLength: 0
   }),
   getters: {
     getTweets(state) {
@@ -31,6 +32,7 @@ export const useTweetsStore = defineStore("tweets", {
           `/api/tweet?page=${page}&limit=${limit}&search=${search}`
         );
         this.tweets = res.data[0].tweets;
+        this.totalLength = res.data[0].total[0].count
       } catch (err) {
         console.log(err);
       }
