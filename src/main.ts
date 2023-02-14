@@ -6,10 +6,10 @@ import './assets/tailwind.css'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { faAngleDown, faArrowLeft, faArrowRight, faCheck, faGear, faHashtag, faHomeUser, faMagnifyingGlass, faPlus, faRetweet, faStar, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faArrowLeft, faArrowRight, faCheck, faGear, faHashtag, faHomeUser, faHouse, faMagnifyingGlass, faPlus, faRetweet, faStar, faTrash, faUser } from '@fortawesome/free-solid-svg-icons'
 import { faComment, faFaceSmile, faHeart, faImage } from '@fortawesome/free-regular-svg-icons'
 
-library.add(faTwitter, faHomeUser, faHashtag, faUser, faAngleDown, faCheck, faPlus, faMagnifyingGlass, faGear, faStar, faImage, faFaceSmile, faStar, faComment, faRetweet, faHeart, faPlus, faArrowLeft, faArrowRight)
+library.add(faTwitter, faHomeUser, faHashtag, faUser, faAngleDown, faCheck, faPlus, faMagnifyingGlass, faGear, faStar, faImage, faFaceSmile, faStar, faComment, faRetweet, faHeart, faPlus, faArrowLeft, faArrowRight, faHouse, faTrash)
 
 createApp(App).use(createPinia()).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
 

@@ -65,6 +65,17 @@ export const useTweetsStore = defineStore("tweets", {
         console.log(err);
       }
     },
+
+    async deleteTweet(tweetId: number) {
+      try {
+        axios.delete(`/api/delete-tweet/${tweetId}`).then(response => {
+          const i = this.tweets.map(data => data._id).indexOf(tweetId);
+          this.tweets.splice(i, 1)
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    },
     //AÑADIDO PARA EL CAMBIO DE ORDEN
     async reverseTweets() {
       this.tweets.reverse();
