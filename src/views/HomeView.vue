@@ -10,8 +10,10 @@
         <nav>
           <ul class="inline-flex items-center justify-content-center">
             <li>
-              <button class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
-                @click="getPreviousPage()">
+              <button
+                class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
+                @click="getPreviousPage()"
+              >
                 <font-awesome-icon icon="fa-solid fa-arrow-left" />
               </button>
             </li>
@@ -21,13 +23,17 @@
               @click="getDataPage(page)"
               class="text-lightblue"
             >
-              <button class="text-lightblue p-0.5 rounded-2 px-2 hover:bg-lightblue hover:text-white">
+              <button
+                class="text-lightblue p-0.5 rounded-2 px-2 hover:bg-lightblue hover:text-white"
+              >
                 {{ page }}
               </button>
             </li>
             <li class="text-lightblue">
-              <button class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
-                @click="getNextPage()">
+              <button
+                class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
+                @click="getNextPage()"
+              >
                 <font-awesome-icon icon="fa-solid fa-arrow-right" />
               </button>
             </li>
@@ -100,54 +106,43 @@ export default {
     // PAGINATION
     const getPreviousPage = () => {
       if (store.filters.page > 0) {
-        store.filters.page --
-        console.log(store.filters.page)
+        store.filters.page--;
         return store.fetchTweets(
           store.filters.page,
           store.filters.limit,
           store.filters.search
-        )
+        );
       }
-      
-    }
+    };
 
     const getNextPage = () => {
       if (store.filters.page >= 0) {
-        store.filters.page ++
-        console.log(store.filters.page)
+        store.filters.page++;
         return store.fetchTweets(
           store.filters.page,
           store.filters.limit,
           store.filters.search
-        )
+        );
       }
-    }
+    };
 
     const getDataPage = (page: number) => {
-      console.log(page)
-      store.filters.page = page
-      console.log(store.filters.page)
-      return store.fetchTweets(
-          store.filters.page,
-          store.filters.limit
-        )
-    }
+      store.filters.page = page;
+      return store.fetchTweets(store.filters.page, store.filters.limit);
+    };
 
     let totalPages = computed(() => {
-      return Math.ceil(store.totalLength / store.filters.limit)
-    })
+      return Math.ceil(store.totalLength / store.filters.limit);
+    });
 
-    
     return {
       userStore,
       click,
       getPreviousPage,
       getNextPage,
       totalPages,
-      getDataPage
-
+      getDataPage,
     };
   },
 };
 </script>
-
