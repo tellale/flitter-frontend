@@ -14,6 +14,7 @@ import {
   faGear,
   faHashtag,
   faHomeUser,
+  faHouse,
   faMagnifyingGlass,
   faPlus,
   faRetweet,
@@ -46,7 +47,8 @@ library.add(
   faHeart,
   faPlus,
   faArrowLeft,
-  faArrowRight
+  faArrowRight,
+  faHouse
 );
 
 createApp(App)

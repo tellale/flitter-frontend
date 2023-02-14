@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <router-link to="/">
-      <img class="w-10 h-10" src="@/assets/image2.png" />
+      <font-awesome-icon icon="fa-solid fa-house" class="w-8 h-8 text-lightblue"/>
     </router-link>
     <img
       v-on:click="handleRedirectSelector"

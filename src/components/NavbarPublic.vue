@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <button v-on:click="handleOpenModal">
-      <img class="w-10 h-10" src="@/assets/image3.png" />
+      <font-awesome-icon icon="fa-solid fa-user" class="w-8 h-8 text-lightblue"/>
     </button>
   </header>
   <div v-if="toggle" class="body-wrapper" v-on:click="handleCloseModal">
