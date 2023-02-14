@@ -1,36 +1,42 @@
 <template>
   <div class="auth-container">
     <flitterHeader />
-    <form @submit.prevent="authStore.handleRegister(userForm)">
+    <form @submit.prevent="authStore.handleRegister(userForm)" id="form">
       <input
-        v-model="userForm.name"
+        v-model.trim="userForm.name"
         id="username"
         type="text"
         placeholder="Nombre de usuario"
+        name="letras"
+        required
+        pattern="[a-zA-Z]+"
       />
       <p>
         Únicamente letras mayúsculas o minúsculas, sin caracteres especiales,
         número o el carácter.
       </p>
       <input
-        v-model="userForm.email"
+        v-model.trim="userForm.email"
         id="email"
         type="email"
         placeholder="E-mail"
+        required
       />
       <input
-        v-model="userForm.password"
+        v-model.trim="userForm.password"
         id="password"
         type="password"
         placeholder="Contraseña"
+        required
       />
       <input
-        v-model="userForm.password2"
+        v-model.trim="userForm.password2"
         id="password2"
         type="password"
         placeholder="Confirmar contraseña"
+        required
       />
-      <button class="button-black" @click="onSubmit" type="submit">
+      <button class="button-black" type="submit">
         Crear una cuenta
       </button>
       <button>
@@ -42,9 +48,7 @@
 
 <script lang="ts">
 import flitterHeader from "@/components/flitterHeader.vue";
-import { ref, computed } from "vue";
-import { useVuelidate } from "@vuelidate/core";
-import { required, email, sameAs, alpha } from "@vuelidate/validators";
+import { ref } from "vue";
 import { useAuthStore } from "../store/auth";
 
 const authStore = useAuthStore();
@@ -63,32 +67,11 @@ export default {
       password2: "",
     });
 
-    const rules = computed(() => {
-      return {
-        name: { required, alpha },
-        email: { required, email },
-        password: { required },
-        password2: { required, sameAs: sameAs(userForm.value.password) },
-      };
-    });
-
-    const v$ = useVuelidate(rules, userForm);
-
+    
     return {
       userForm,
-      rules,
-      v$,
       authStore,
 
-      onSubmit: async () => {
-        const result = await v$.value.$validate();
-
-        if (result) {
-          console.log("Formulario válido");
-        } else {
-          console.log("Error, formulario inválido");
-        }
-      },
     };
   },
 };
@@ -143,4 +126,5 @@ export default {
   background-color: black;
   color: white;
 }
+
 </style>
