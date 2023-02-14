@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-container">
+  <div>
     <flitterHeader />
     <div v-if="!loading" class="UserView">
       <div class="block place-content-center">
@@ -125,7 +125,6 @@ import { computed, defineComponent, ref } from "vue";
 import flitterHeader from "@/components/flitterHeader.vue";
 import { useUsersStore } from "@/store/user";
 import { useTweetsStore } from "@/store";
-import PaginationProfile from "@/components/paginationProfile.vue";
 import Tweet from "@/interfaces/Tweets";
 import TweetCard from "@/components/tweetCard.vue";
 
@@ -134,8 +133,6 @@ export default defineComponent({
   components: {
     flitterHeader,
     TweetCard,
-    PaginationProfile,
-    ProfileDetails,
   },
   props: {
     name: {
@@ -147,6 +144,7 @@ export default defineComponent({
     const userStore = useUsersStore();
     const tweetsStore = useTweetsStore();
     userStore.fetchUser(props.name);
+    const isAuth = ref(true);
 
     const userData = computed(() => {
       fetchData(userStore.user?._id);
@@ -157,7 +155,7 @@ export default defineComponent({
       return userStore.isLoading;
     });
 
-    //PAGINATION
+    //PAGINACIÓN
     const elementsPerPage = 10;
     let actualPage = 1;
 
@@ -200,7 +198,30 @@ export default defineComponent({
       getDataPage(actualPage);
     };
 
-    //FOLLOW AND UNFOLLOW
+    //COLOREA LA PÁGINA ACTUAL
+    const isActive = (page: number) => {
+      return page == actualPage ? "active" : "";
+    };
+
+    //AÑADIDO PARA EL CAMBIO DE ORDEN
+    // let tweets = ref<Tweet[]>([]);
+    // fetchData();
+    // async function fetchData() {
+    //     await store.fetchTweets();
+    //     tweets.value = store.tweets;
+    // }
+    // const reverseOrder = () => {
+    //   store.reverseTweets();
+    //   tweets.value = store.tweets;
+    // };
+
+    const reverseOrder = () => {
+      tweetsStore.reverseTweets();
+      paginatedData.value = tweetsStore.tweets;
+    };
+    //HASTA AQUI
+
+    //SEGUIR Y DEJAR DE SEGUIR
     let isFollowing = ref<boolean>(false);
     let isFinished = ref<boolean>(true);
 
@@ -209,6 +230,8 @@ export default defineComponent({
     }
 
     const followOrUnfollow = async () => {
+      // await userStore.fetchUser(props.name);
+      // await userStore.fetchAuthUser();
       isFinished.value = false;
       await userStore.followOrUnfollowAUser(isFollowing.value, props.name);
       isFollowing.value = userStore.amIFollowing();
@@ -219,13 +242,18 @@ export default defineComponent({
       userData,
       loading,
       isFollowing,
+      //getTweets,
       followOrUnfollow,
+      isAuth,
       totalPages,
       getDataPage,
       getPreviousPage,
       getNextPage,
       paginatedData,
+      isActive,
       thereAreTweets,
+      //AÑADIDO PARA EL CAMBIO DE ORDEN
+      reverseOrder,
       isFinished,
     };
   },
