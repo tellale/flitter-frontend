@@ -1,17 +1,16 @@
 <template>
   <div>
-    <tweetWrite/>
+    <tweetWrite />
   </div>
 </template>
 
 <script lang="ts">
-import tweetWrite from '@/components/tweetWrite.vue'
-
+import tweetWrite from "@/components/tweetWrite.vue";
 
 export default {
-  name: 'writeTweet',
+  name: "writeTweet",
   components: {
     tweetWrite,
-  } 
-}
+  },
+};
 </script>
