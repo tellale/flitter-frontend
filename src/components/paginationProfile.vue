@@ -1,9 +1,11 @@
 <template>
     <div>
       <nav aria-label="Page navigation example">
-        <ul class="pagination items-center justify-content-center">
-          <li class="page-item">
-            <a class="text-lightblue p-3 hover:text-grey" @click="$emit('getPreviousPage')">Anterior</a>
+        <ul class="inline-flex items-center justify-content-center">
+          <li>
+            <button class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2" @click="$emit('getPreviousPage')">
+              <font-awesome-icon icon="fa-solid fa-arrow-left" />
+            </button>
           </li>
           <li
             v-for="page in totalPages"
@@ -11,10 +13,14 @@
             @click="$emit('getDataPage', page)"
             class="text-lightblue"
           >
-            <a class="text-white bg-lightblue p-2 rounded-2 px-3 hover:bg-grey">{{ page }}</a>
+            <button class="text-lightblue p-0.5 rounded-2 px-2 hover:bg-lightblue hover:text-white">
+              {{ page }}
+            </button>
           </li>
           <li class="text-lightblue">
-            <a class="text-lightblue p-3 hover:text-grey" @click="$emit('getNextPage')">Siguiente</a>
+            <button class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2" @click="$emit('getNextPage')">
+              <font-awesome-icon icon="fa-solid fa-arrow-right"/>
+            </button >
           </li>
         </ul>
       </nav>

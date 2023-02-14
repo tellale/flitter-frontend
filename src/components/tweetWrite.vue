@@ -78,21 +78,6 @@ export default {
         }
       }
     }
-  
-    // const handleSubmit = async () => {
-    //   if (newTweet.value.length > 0) {
-    //     try {
-    //       store.writeTweet(newTweet.value);
-    //     } catch (err) {
-    //       console.log(err);
-    //     } finally {
-    //       store.fetchTweets();
-    //       router.push({
-    //         path: "/",
-    //       });
-    //     }
-    //   }
-    // };
 
     const tweets = computed(() => {
       return store.tweets;

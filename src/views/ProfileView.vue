@@ -9,7 +9,7 @@
         @followOrUnfollow="followOrUnfollow"
       />
       <div>
-        <h2 class="fleets">Fleets</h2>
+        <h2 class="mb-1">Fleets</h2>
         <hr />
         <TweetCard
           v-for="tweet in paginatedData"
@@ -18,21 +18,6 @@
           class="w-full p-4 border-b hover:bg-ligther flex"
         />
         <div v-show="thereAreTweets" class="paginationNav">
-          <!-- <i @click="reverseOrder()">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-arrow-down-up"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"
-              />
-            </svg>
-          </i> -->
           <PaginationProfile
             :totalPages="totalPages"
             @getPreviousPage="getPreviousPage"
@@ -127,17 +112,6 @@ export default defineComponent({
       getDataPage(actualPage);
     };
 
-    // //COLOREA LA PÁGINA ACTUAL
-    // const isActive = (page: number) => {
-    //   return page == actualPage ? "active" : "";
-    // };
-
-    // //REVERSE TWEET ORDER
-    // const reverseOrder = () => {
-    //   tweetsStore.reverseTweets();
-    //   paginatedData.value = tweetsStore.tweets;
-    // };
-
     //FOLLOW AND UNFOLLOW
     let isFollowing = ref<boolean>(false);
     let isFinished = ref<boolean>(true);
@@ -147,8 +121,6 @@ export default defineComponent({
     }
 
     const followOrUnfollow = async () => {
-      // await userStore.fetchUser(props.name);
-      // await userStore.fetchAuthUser();
       isFinished.value = false;
       await userStore.followOrUnfollowAUser(isFollowing.value, props.name);
       isFollowing.value = userStore.amIFollowing();
@@ -159,31 +131,21 @@ export default defineComponent({
       userData,
       loading,
       isFollowing,
-      //getTweets,
       followOrUnfollow,
       totalPages,
       getDataPage,
       getPreviousPage,
       getNextPage,
       paginatedData,
-      //isActive,
       thereAreTweets,
-      //reverseOrder,
       isFinished,
-      //actualPage
     };
   },
 });
 </script>
 
 <style scoped>
-.fleets {
-  color: #4c9eeb;
-  font-weight: bold;
-  font-size: x-large;
-}
-
-.profile-container {
-  margin-bottom: 4rem;
-}
+  .profile-container {
+    margin-bottom: 4rem;
+  }
 </style>

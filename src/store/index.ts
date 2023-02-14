@@ -47,14 +47,6 @@ export const useTweetsStore = defineStore("tweets", {
       this.tweets.push(data.data);
     },
 
-    // async writeTweet(tweet: string) {
-    //   const data = await axios.post("/api/create-tweet", {
-    //     text: tweet,
-    //     tag: "",
-    //   });
-    //   this.tweets.push(data.data);
-    // },
-
     async fetchUserTweets(userId: number | undefined) {
       try {
         if (userId) {
