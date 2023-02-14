@@ -29,14 +29,6 @@
       <p class="text-left py-3">{{ tweet.text }}</p>
 
       <div class="flex items-center place-content-end text-md px-4 text-grey">
-        <div class="mr-10">
-          <button
-            v-show="isAuth"
-            class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue"
-          >
-            Seguir
-          </button>
-        </div>
         <button
           v-show="isAuth"
           @click="addLike(tweet._id)"

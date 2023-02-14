@@ -1,45 +1,41 @@
 /* eslint-disable */
 <template>
-  <div id="app" class="home-container flex h-screen w-full">
+  <div id="app" class="mb-16 flex h-screen w-full">
     <!-- Tweets -->
     <div class="w-full h-full overflow-y-scroll static">
       <flitterHeader />
       <searchBar />
       <tweetGet />
-      <div class="paginationNav">
+      <div>
         <nav>
-          <ul class="pagination items-center justify-content-center">
-            <li class="page-item">
-              <a
-                class="text-lightblue p-3 hover:text-grey"
-                @click="getPreviousPage()"
-                >Anterior</a
-              >
+          <ul class="inline-flex items-center justify-content-center">
+            <li>
+              <button class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
+                @click="getPreviousPage()">
+                <font-awesome-icon icon="fa-solid fa-arrow-left" />
+              </button>
             </li>
             <li
               v-for="page in totalPages"
               :key="page"
               @click="getDataPage(page)"
-              v-bind:class="isActive(page)"
               class="text-lightblue"
             >
-              <a
-                class="text-white bg-lightblue p-2 rounded-2 px-3 hover:bg-grey"
-                >{{ page }}</a
-              >
+              <button class="text-lightblue p-0.5 rounded-2 px-2 hover:bg-lightblue hover:text-white">
+                {{ page }}
+              </button>
             </li>
             <li class="text-lightblue">
-              <a
-                class="text-lightblue p-3 hover:text-grey"
-                @click="getNextPage()"
-                >Siguiente</a
-              >
+              <button class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
+                @click="getNextPage()">
+                <font-awesome-icon icon="fa-solid fa-arrow-right" />
+              </button>
             </li>
           </ul>
         </nav>
       </div>
 
-      <div v-if="userStore.isAuth" class="fixed z-10 bottom-20 right-5">
+      <div v-if="userStore.isAuth" class="fixed z-20 bottom-20 right-5">
         <button @click="click">
           <font-awesome-icon
             icon="fa-solid fa-plus"
@@ -61,8 +57,7 @@ import { useTweetsStore } from "@/store/index";
 import { useUsersStore } from "@/store/user";
 
 import { onBeforeMount, onMounted, onUpdated } from "@vue/runtime-core";
-import { ref, computed } from "vue";
-import Tweet from "@/interfaces/Tweets";
+import { computed } from "vue";
 
 export default {
   name: "HomeView",
@@ -75,6 +70,7 @@ export default {
     const store = useTweetsStore();
     const userStore = useUsersStore();
     onBeforeMount(async () => await userStore.fetchAuthUser());
+
     onMounted(() => {
       store.fetchTweets(
         // STATE PARAMETERS TO INJECT TO BACKEND QUERY
@@ -93,6 +89,7 @@ export default {
       );
     });
 
+    // ROUTER FOR + BUTTON
     const router = useRouter();
     const click = () => {
       router.push({
@@ -100,58 +97,57 @@ export default {
       });
     };
 
-    //PAGINACIÓN
-    const elementsPerPage = 10;
-    let actualPage = 1;
-
-    let totalPages = computed(() => {
-      const pages = Math.ceil(store.getTweetsLength / elementsPerPage);
-      return pages;
-    });
-
-    const getDataPage = (page: number) => {
-      actualPage = page;
-      paginatedData.value = [];
-      let ini = page * elementsPerPage - elementsPerPage;
-      let fin = page * elementsPerPage;
-      paginatedData.value = store.getTweets.slice(ini, fin);
-    };
-
-    let paginatedData = ref<Tweet[]>([]);
-
+    // PAGINATION
     const getPreviousPage = () => {
-      if (actualPage > 1) {
-        actualPage--;
+      if (store.filters.page > 0) {
+        store.filters.page --
+        console.log(store.filters.page)
+        return store.fetchTweets(
+          store.filters.page,
+          store.filters.limit,
+          store.filters.search
+        )
       }
-      getDataPage(actualPage);
-    };
+      
+    }
 
     const getNextPage = () => {
-      if (actualPage < totalPages.value) {
-        actualPage++;
+      if (store.filters.page >= 0) {
+        store.filters.page ++
+        console.log(store.filters.page)
+        return store.fetchTweets(
+          store.filters.page,
+          store.filters.limit,
+          store.filters.search
+        )
       }
-      getDataPage(actualPage);
-    };
+    }
 
-    const isActive = (page: number) => {
-      return page == actualPage ? "active" : "";
-    };
+    const getDataPage = (page: number) => {
+      console.log(page)
+      store.filters.page = page
+      console.log(store.filters.page)
+      return store.fetchTweets(
+          store.filters.page,
+          store.filters.limit
+        )
+    }
 
+    let totalPages = computed(() => {
+      return Math.ceil(store.totalLength / store.filters.limit)
+    })
+
+    
     return {
       userStore,
       click,
-      totalPages,
-      getDataPage,
       getPreviousPage,
       getNextPage,
-      paginatedData,
-      isActive,
+      totalPages,
+      getDataPage
+
     };
   },
 };
 </script>
-<style>
-.home-container {
-  margin-bottom: 4rem;
-}
-</style>
+
