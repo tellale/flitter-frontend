@@ -16,6 +16,11 @@ export default {
         ...store,
         filters: { ...store.filters, search: e.target.value },
       });
+      return store.fetchTweets(
+        store.filters.page,
+        store.filters.limit,
+        store.filters.search
+      );
     };
     return {
       handleChange,

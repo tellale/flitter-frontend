@@ -10,9 +10,10 @@ export const useTweetsStore = defineStore("tweets", {
     isLoading: false,
     filters: {
       page: 0,
-      limit: 20,
+      limit: 10,
       search: "",
     },
+    totalLength: 0,
   }),
   getters: {
     getTweets(state) {
@@ -32,6 +33,7 @@ export const useTweetsStore = defineStore("tweets", {
           `/api/tweet?page=${page}&limit=${limit}&search=${search}`
         );
         this.tweets = res.data[0].tweets;
+        this.totalLength = res.data[0].total[0].count;
       } catch (err) {
         console.log(err);
       }
@@ -70,6 +72,17 @@ export const useTweetsStore = defineStore("tweets", {
         this.tweets = data.data;
       } catch (err) {
         console.log(err);
+      }
+    },
+
+    async deleteTweet(tweetId: number) {
+      try {
+        axios.delete(`/api/delete-tweet/${tweetId}`).then(response => {
+          const i = this.tweets.map(data => data._id).indexOf(tweetId);
+          this.tweets.splice(i, 1)
+        })
+      } catch (err) {
+        console.log(err)
       }
     },
     //AÑADIDO PARA EL CAMBIO DE ORDEN
