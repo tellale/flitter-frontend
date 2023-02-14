@@ -1,11 +1,12 @@
 <template>
     <div class="flex-none mr-4">
-        <img :src='avatar' class="h-16 w-16 rounded-full flex-none">
+        <!-- <img :src='avatar' class="h-16 w-16 rounded-full flex-none"> -->
+        <img :src='user?.avatar' class="h-16 w-16 rounded-full flex-none">
     </div>
     <div class="w-full">
         <div class="flex flex-wrap items-center text-left w-full">
-        <button @click="visitUserProfile(tweet.postedBy.name)">
-          <p class="font-semibold">{{ tweet.postedBy.name }}</p>
+        <button @click="visitUserProfile(user?.name)">
+          <p class="font-semibold">{{ user?.name }}</p>
         </button>
         <p
             class="text-sm text-lightblue ml-2"
@@ -37,11 +38,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { defineComponent, PropType, ref, computed } from 'vue'
 import { useTweetsStore } from '@/store';
 import Tweet from '@/interfaces/Tweets';
 import moment from 'moment'
 import { useRouter } from 'vue-router'
+import { useUsersStore } from '@/store/user';
 
 export default defineComponent({
     name: "tweetCard",
@@ -50,15 +52,17 @@ export default defineComponent({
             type: Object as PropType<Tweet>,
             required: true,
         },
-        avatar:{
-            type: Object as PropType<string | undefined>,
-            required: true,
-        }
     },
     setup() {
         const isAuth = ref(true);
         const tweetsStore = useTweetsStore();
+        const userStore = useUsersStore();
         const router = useRouter()
+
+        const user = computed(() => {
+            return userStore.user;
+        });
+        console.log(user)
 
         const addLike = async (tweetId: number) => {
             tweetsStore.likeTweet(tweetId) 
@@ -68,13 +72,14 @@ export default defineComponent({
             return moment(date).fromNow()
         }
 
-        const visitUserProfile = (name:string) => {
+        const visitUserProfile = (name:string | undefined) => {
             router.push({
                 path: `/profile/${name}`
             })
         }
 
         return{
+        user,
         isAuth,
         addLike,
         timeAgoDate,

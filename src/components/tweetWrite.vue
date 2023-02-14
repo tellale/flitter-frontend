@@ -24,6 +24,15 @@
             v-model="newTweet"
             placeholder="Que esta pasando?"
             class="w-full mt-3 pb-3 focus:outline-none"
+            required
+          >
+          </textarea>
+        </div>
+        <div>
+          <textarea
+            v-model="newTags"
+            placeholder="Escribe aquí tus etiquetas"
+            class="w-full mt-3 pb-3 focus:outline-none"
           >
           </textarea>
         </div>
@@ -47,13 +56,18 @@ export default {
     const userStore = useUsersStore();
 
     const newTweet = ref("");
+    const newTags = ref("");
     const router = useRouter();
     onBeforeMount(async () => await userStore.fetchAuthUser());
 
     const handleSubmit = async () => {
+      let tags: Array<string> = []
+      if(newTags.value.length>0){
+        tags = newTags.value.split(" ");
+      }
       if (newTweet.value.length > 0) {
         try {
-          store.writeTweet(newTweet.value);
+          store.writeTweet({text: newTweet.value, tags: tags});
         } catch (err) {
           console.log(err);
         } finally {
@@ -63,7 +77,22 @@ export default {
           });
         }
       }
-    };
+    }
+  
+    // const handleSubmit = async () => {
+    //   if (newTweet.value.length > 0) {
+    //     try {
+    //       store.writeTweet(newTweet.value);
+    //     } catch (err) {
+    //       console.log(err);
+    //     } finally {
+    //       store.fetchTweets();
+    //       router.push({
+    //         path: "/",
+    //       });
+    //     }
+    //   }
+    // };
 
     const tweets = computed(() => {
       return store.tweets;
@@ -79,6 +108,7 @@ export default {
       userStore,
       tweets,
       newTweet,
+      newTags,
       handleSubmit,
       click,
     };
