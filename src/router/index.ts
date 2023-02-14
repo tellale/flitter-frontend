@@ -44,6 +44,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () =>
       import(/* webpackChunkName: "register" */ "../views/RegisterView.vue"),
   },
+  {
+    path: "/:pathMatch(.*)",
+    component: () => import(/* webpackChunkName: "notFound" */ '../views/NotFoundView.vue'),
+  }
 ];
 
 const router = createRouter({

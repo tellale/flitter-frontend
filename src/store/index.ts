@@ -2,6 +2,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import Tweet from "@/interfaces/Tweets";
+import TweetBody from "@/interfaces/TweetBody";
 
 export const useTweetsStore = defineStore("tweets", {
   state: () => ({
@@ -38,10 +39,10 @@ export const useTweetsStore = defineStore("tweets", {
       }
     },
 
-    async writeTweet(tweet: string) {
+    async writeTweet(body: TweetBody) {
       const data = await axios.post("/api/create-tweet", {
-        text: tweet,
-        tag: "",
+        text: body.text,
+        tags: body.tags,
       });
       this.tweets.push(data.data);
     },

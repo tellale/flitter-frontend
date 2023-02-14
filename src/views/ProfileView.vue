@@ -3,36 +3,45 @@
     <flitterHeader />
     <div v-if="!loading" class="UserView">
       <div class="block place-content-center">
-        <div class="flex justify-center mt-10 mb-30 place-content-center items-center">
-        <img :src="userData?.avatar" class="avatar mb-2" />
+        <div
+          class="flex justify-center mt-10 mb-30 place-content-center items-center"
+        >
+          <img :src="userData?.avatar" class="avatar mb-2" />
+        </div>
+        <div class="profileDetails justify-center">
+          <h1 class="text-center">{{ userData?.name }}</h1>
+        </div>
+        <div class="flex justify-center mb-3">
+          <p>
+            <strong>{{ userData?.following.length }}</strong> Siguiendo
+          </p>
+          <p>
+            <strong>{{ userData?.followers.length }}</strong> Seguidores
+          </p>
+        </div>
       </div>
-      <div class="profileDetails justify-center">
-        <h1 class="text-center">{{ userData?.name }}</h1>
-      </div>
-      <div class="flex justify-center mb-3">
-        <p>
-          <strong>{{ userData?.following.length }}</strong> Siguiendo
-        </p>
-        <p>
-          <strong>{{ userData?.followers.length }}</strong> Seguidores
-        </p>
-      </div>
-      </div>
-      
 
-      <div class="flex items-center place-content-center text-md px-4 text-grey">
-        <div class="mb-4 items-center ">
+      <div
+        class="flex items-center place-content-center text-md px-4 text-grey"
+      >
+        <div class="mb-4 items-center">
           <div v-if="!isFollowing">
-            <button v-show="isAuth"
+            <button
+              v-show="isAuth"
               class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue"
-              @click="followOrUnfollow()" :disabled="!isFinished">
+              @click="followOrUnfollow()"
+              :disabled="!isFinished"
+            >
               Seguir
             </button>
           </div>
           <div v-else>
-            <button v-show="isAuth"
+            <button
+              v-show="isAuth"
               class="rounded-full text-lightblue border border-lightblue py-1 px-4 hover:text-white hover:bg-lightblue"
-              @click="followOrUnfollow()" :disabled="!isFinished">
+              @click="followOrUnfollow()"
+              :disabled="!isFinished"
+            >
               Dejar de seguir
             </button>
           </div>
@@ -46,45 +55,65 @@
         <div v-show="thereAreTweets" class="paginationNav">
           <!-- AÑADIDO PARA EL CAMBIO DE ORDEN  -->
           <i @click="reverseOrder()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-              class="bi bi-arrow-down-up" viewBox="0 0 16 16">
-              <path fill-rule="evenodd"
-                d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-down-up"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"
+              />
             </svg>
           </i>
           <!-- HASTA AQUÍ  -->
 
           <nav aria-label="Page navigation example">
-      <ul class="inline-flex items-center justify-content-center">
-        <li>
-          <button class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
-                @click="getPreviousPage()">
-            <font-awesome-icon icon="fa-solid fa-arrow-left" />
-          </button>
-        </li>
-        <li 
-        v-for="page in totalPages" 
-        :key="page" 
-        @click="getDataPage(page)" 
-        v-bind:class="isActive(page)"
-        class="text-lightblue">
-          <button class="text-lightblue p-0.5 rounded-2 px-2 hover:bg-lightblue hover:text-white">
-            {{ page }}
-          </button>
-        </li>
-        <li class="text-lightblue">
-          <button class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
-                @click="getNextPage()">
-            <font-awesome-icon icon="fa-solid fa-arrow-right" />
-          </button>
-        </li>
-      </ul>
-    </nav>
-
+            <ul class="inline-flex items-center justify-content-center">
+              <li>
+                <button
+                  class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
+                  @click="getPreviousPage()"
+                >
+                  <font-awesome-icon icon="fa-solid fa-arrow-left" />
+                </button>
+              </li>
+              <li
+                v-for="page in totalPages"
+                :key="page"
+                @click="getDataPage(page)"
+                v-bind:class="isActive(page)"
+                class="text-lightblue"
+              >
+                <button
+                  class="text-lightblue p-0.5 rounded-2 px-2 hover:bg-lightblue hover:text-white"
+                >
+                  {{ page }}
+                </button>
+              </li>
+              <li class="text-lightblue">
+                <button
+                  class="text-lightblue p-2 hover:text-white hover:bg-lightblue rounded-2"
+                  @click="getNextPage()"
+                >
+                  <font-awesome-icon icon="fa-solid fa-arrow-right" />
+                </button>
+              </li>
+            </ul>
+          </nav>
 
           <!-- <tweetGet/> -->
-          <TweetCard v-for="tweet in paginatedData" :key="tweet._id" :tweet="tweet" :avatar="userData?.avatar"
-            :name="userData?.name" class="w-full p-4 border-b hover:bg-ligther flex" />
+          <TweetCard
+            v-for="tweet in paginatedData"
+            :key="tweet._id"
+            :tweet="tweet"
+            :avatar="userData?.avatar"
+            :name="userData?.name"
+            class="w-full p-4 border-b hover:bg-ligther flex"
+          />
         </div>
       </div>
     </div>
@@ -98,7 +127,6 @@ import { useUsersStore } from "@/store/user";
 import { useTweetsStore } from "@/store";
 import Tweet from "@/interfaces/Tweets";
 import TweetCard from "@/components/tweetCard.vue";
-
 
 export default defineComponent({
   name: "ProfileView",
