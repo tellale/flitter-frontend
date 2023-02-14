@@ -1,6 +1,6 @@
 <template>
   <div class="search-bar">
-    <input @input="handleChange" placeholder="&#x1F50E;  Search tweets here" />
+    <input @input="handleChange" placeholder="&#x1F50E;  Search fleets here" />
   </div>
 </template>
 <script lang="ts">
