@@ -34,9 +34,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped>
-.active{
-  background-color: red;
-}
-</style>
