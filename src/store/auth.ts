@@ -61,5 +61,14 @@ export const useAuthStore = defineStore("auth", {
       eraseCookie("express:sess");
       return window.location.replace("/login");
     },
+    async handledeleteAccount() {
+      try {
+        await axios.delete("/api/user");
+        eraseCookie("express:sess");
+        return window.location.replace("/register");
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 });

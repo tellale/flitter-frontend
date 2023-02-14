@@ -78,21 +78,11 @@ export default {
     onBeforeMount(async () => await userStore.fetchAuthUser());
 
     onMounted(() => {
-      store.fetchTweets(
-        // STATE PARAMETERS TO INJECT TO BACKEND QUERY
-        store.filters.page,
-        store.filters.limit,
-        store.filters.search
-      );
+      store.fetchTweets();
     });
 
     onUpdated(() => {
-      store.fetchTweets(
-        // STATE PARAMETERS TO INJECT TO BACKEND QUERY
-        store.filters.page,
-        store.filters.limit,
-        store.filters.search
-      );
+      store.fetchTweets();
     });
 
     // ROUTER FOR + BUTTON
@@ -107,28 +97,20 @@ export default {
     const getPreviousPage = () => {
       if (store.filters.page > 0) {
         store.filters.page--;
-        return store.fetchTweets(
-          store.filters.page,
-          store.filters.limit,
-          store.filters.search
-        );
+        return store.fetchTweets();
       }
     };
 
     const getNextPage = () => {
       if (store.filters.page >= 0) {
         store.filters.page++;
-        return store.fetchTweets(
-          store.filters.page,
-          store.filters.limit,
-          store.filters.search
-        );
+        return store.fetchTweets();
       }
     };
 
     const getDataPage = (page: number) => {
       store.filters.page = page;
-      return store.fetchTweets(store.filters.page, store.filters.limit);
+      return store.fetchTweets();
     };
 
     let totalPages = computed(() => {

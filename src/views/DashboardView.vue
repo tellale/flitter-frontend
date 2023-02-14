@@ -2,8 +2,8 @@
   <div class="container">
     <div class="buttons">
       <img class="mb-20 mx-auto w-8 h-8" src="@/assets/logo_fitter_1.png" />
-      <router-link to="/profile">
-      <button class="secondary-button">Perfil</button>
+      <router-link :to="{ path: `/profile/${authUser?.name}` }">
+        <button class="secondary-button">Perfil</button>
       </router-link>
       <deleteUser />
       <userLogout />
@@ -14,10 +14,15 @@
 <script lang="ts">
 import deleteUser from "@/components/deleteUser.vue";
 import userLogout from "@/components/userLogout.vue";
+import { useUsersStore } from "@/store/user";
 
 export default {
-  name: "ExitView",
+  name: "DashboardView",
   components: { deleteUser, userLogout },
+  setup() {
+    const { authUser } = useUsersStore();
+    return { authUser };
+  },
 };
 </script>
 

@@ -12,8 +12,8 @@
     </div>
     <div class="w-full">
       <div class="flex flex-wrap items-center text-left w-full">
-        <button @click="visitUserProfile(tweet.postedBy.name)">
-          <p class="font-semibold">{{ tweet.postedBy.name }}</p>
+        <button @click="visitUserProfile(tweet?.postedBy?.name)">
+          <p class="font-semibold">{{ tweet?.postedBy?.name }}</p>
         </button>
         <p
           class="text-sm text-lightblue ml-2"
@@ -23,18 +23,18 @@
           {{ tag }}
         </p>
         <p class="text-grey text-sm ml-1">
-          · {{ timeAgoDate(tweet.updatedAt) }}
+          · {{ timeAgoDate(tweet?.updatedAt) }}
         </p>
         <button
           v-show="isAuth"
-          v-if="userName === tweet.postedBy.name"
+          v-if="userName === tweet?.postedBy?.name"
           @click="deleteTweet(tweet._id)"
           class="p-1 text-sm text-darkblue hover:text-grey"
         >
           <p>· Delete</p>
         </button>
       </div>
-      <p class="text-left py-3">{{ tweet.text }}</p>
+      <p class="text-left py-3">{{ tweet?.text }}</p>
 
       <div class="flex items-center place-content-end text-md px-4 text-grey">
         <button
@@ -43,11 +43,11 @@
           class="flex items-center place-content-end hover:text-lightblue"
         >
           <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
-          <p>{{ tweet.likes.length }}</p>
+          <p>{{ tweet?.likes?.length }}</p>
         </button>
         <div v-show="!isAuth" class="flex items-center place-content-end">
           <font-awesome-icon icon="fa-regular fa-heart" class="mr-3" />
-          <p>{{ tweet.likes.length }}</p>
+          <p>{{ tweet?.likes?.length }}</p>
         </div>
       </div>
     </div>

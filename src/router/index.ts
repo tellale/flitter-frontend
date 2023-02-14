@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import ExitView from "../views/ExitView.vue";
+import DashboardView from "../views/DashboardView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/dashboard",
     name: "exit",
-    component: ExitView,
+    component: DashboardView,
   },
   {
     path: "/login",
@@ -46,8 +46,9 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/:pathMatch(.*)",
-    component: () => import(/* webpackChunkName: "notFound" */ '../views/NotFoundView.vue'),
-  }
+    component: () =>
+      import(/* webpackChunkName: "notFound" */ "../views/NotFoundView.vue"),
+  },
 ];
 
 const router = createRouter({

@@ -27,10 +27,10 @@ export const useTweetsStore = defineStore("tweets", {
     },
   },
   actions: {
-    async fetchTweets(page = 0, limit = 20, search = "") {
+    async fetchTweets() {
       try {
         const res = await axios.get(
-          `/api/tweet?page=${page}&limit=${limit}&search=${search}`
+          `/api/tweet?page=${this.filters.page}&limit=${this.filters.limit}&search=${this.filters.search}`
         );
         this.tweets = res.data[0].tweets;
         this.totalLength = res.data[0].total[0].count;
@@ -60,8 +60,11 @@ export const useTweetsStore = defineStore("tweets", {
 
     async likeTweet(tweetId: number | undefined) {
       try {
-        const data = await axios.patch(`/api/tweet/${tweetId}/like`);
-        this.tweets = data.data;
+        await axios.patch(`/api/tweet/${tweetId}/like`);
+        const res = await axios.get(
+          `/api/tweet?page=${this.filters.page}&limit=${this.filters.limit}&search=${this.filters.search}`
+        );
+        this.tweets = res.data[0].tweets;
       } catch (err) {
         console.log(err);
       }
